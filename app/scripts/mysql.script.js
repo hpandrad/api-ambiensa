@@ -1,4 +1,4 @@
-CREATE SCHEMA 'fiscalizacion_db_2';
+CREATE SCHEMA 'fiscalizacion_db';
 
 CREATE TABLE Empresa(
 	id INT,

@@ -3,5 +3,5 @@ module.exports = {
     USER: "ufiscalizacion",
     PASSWORD: "Pruebasa1",
     DB: "fiscalizacion_db",
-    PORT: "3306"
+    PORT: "3308"
   };
