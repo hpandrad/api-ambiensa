@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (request, response) => {
-  response.json({ message: 'Node.js, Express, and Postgres API' });
+  response.json({ message: 'Hola mundo!' });
 });
 
 app.get('/empresas', controllers.getEmpresas);

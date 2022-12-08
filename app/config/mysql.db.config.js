@@ -1,6 +1,6 @@
 module.exports = {
     HOST: "localhost",
-    USER: "usnap",
+    USER: "ufiscalizacion",
     PASSWORD: "Pruebasa1",
     DB: "fiscalizacion_db",
     PORT: "3308"
