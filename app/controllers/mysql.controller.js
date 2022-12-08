@@ -1,4 +1,3 @@
-// const data_access = require('../data_access/postgresql.data_access');
 const data_access = require('../data_access/mysql.data_access');
 
 const getEmpresas = (request, response) => {
@@ -6,8 +5,8 @@ const getEmpresas = (request, response) => {
         .ConsultaEmpresas()
         .then(result => {
             console.log(result);
-            if(result.rowCount > 0) {
-                response.status(200).json(result.rows);
+            if(result.length > 0) {
+                response.status(200).json(result);
             } else {
                 response.status(404).send({
                     message: "Datos no encontrados"
@@ -35,8 +34,8 @@ const getEmpresaPorId = (request, response) => {
         .ConsultaEmpresaPorId(id)        
         .then(result => {
             console.log(result);
-            if(result.rowCount > 0) {
-                response.status(200).json(result.rows);
+            if(result.length > 0) {
+                response.status(200).json(result);
             } else {
                 response.status(404).send({
                     message: "Datos no encontrados"
@@ -70,8 +69,8 @@ const setIniciarSesion = (request, response) => {
         .ValidaUsuario(user, pass)        
         .then(result => {
             console.log(result);
-            if(result.rowCount > 0) {
-                response.status(200).json(result.rows);
+            if(result.length > 0) {
+                response.status(200).json(result);
             } else {
                 response.status(404).send({
                     message: "Datos no encontrados"

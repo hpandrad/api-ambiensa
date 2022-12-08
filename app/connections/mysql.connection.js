@@ -7,7 +7,8 @@ var pool = mysql.createPool({
   host: config.HOST,
   database: config.DB,
   password: config.PASSWORD,
-  port: config.PORT
+  port: config.PORT,
+  multipleStatements: true
 });
 
 pool.getConnection((err,connection)=> {

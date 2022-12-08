@@ -2,7 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require("cors");
 const app = express();
-const controllers = require('./app/controllers');
+// const controllers = require('./app/controllers/postgresql.controller');
+const controllers = require('./app/controllers/mysql.controller');
 const PORT = process.env.PORT || 8080;
 
 var corsOptions = {
