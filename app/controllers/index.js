@@ -1,5 +1,5 @@
-const data_access = require('../data_access/postgresql.data_access');
-// const data_access = require('../data_access/mysql.data_access');
+// const data_access = require('../data_access/postgresql.data_access');
+const data_access = require('../data_access/mysql.data_access');
 
 const getEmpresas = (request, response) => {
     data_access
