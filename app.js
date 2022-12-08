@@ -1,10 +1,21 @@
-const http = require('http');
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+const controllers = require('./app/controllers');
 
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
-http.createServer(function(request, response) {
-  response.writeHead(200, {'Content-Type': 'text/plain'});
-  response.end("Hello, World!\n");
-}).listen(port);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-console.log(`App is running... (port: ${port})`);
+app.get('/', (request, response) => {
+  response.json({ message: 'Node.js, Express, and Postgres API' });
+});
+
+app.get('/empresas', controllers.getEmpresas);
+app.get('/empresaPorId/:id', controllers.getEmpresaPorId);
+app.post('/login', controllers.setIniciarSesion)
+
+app.listen(PORT, () => {
+    console.log(`App running on port *:${PORT}.`);
+});

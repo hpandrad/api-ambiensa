@@ -8,12 +8,16 @@ const getEmpresas = (request, response) => {
             if(result.rowCount > 0) {
                 response.status(200).json(result.rows);
             } else {
-                response.status(404).send("Datos no encontrados");
+                response.status(404).send({
+                    message: "Datos no encontrados"
+                });
             }
         })
         .catch(err => {
             console.log(err);
-            return response.status(500).send("INTERNAL SERVER ERROR");
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });
         });
 }
 
@@ -21,7 +25,9 @@ const getEmpresaPorId = (request, response) => {
     const id = parseInt(request.params.id)    
 
     if(id <= 0) {
-        return response.status(400).send("Empresa no existe");
+        return response.status(400).send({
+            message: "Empresa no existe"
+        });
     }
 
     data_access
@@ -31,12 +37,16 @@ const getEmpresaPorId = (request, response) => {
             if(result.rowCount > 0) {
                 response.status(200).json(result.rows);
             } else {
-                response.status(404).send("Datos no encontrados");
+                response.status(404).send({
+                    message: "Datos no encontrados"
+                });
             }
         })
         .catch(err => {
             console.log(err);
-            return response.status(500).send("INTERNAL SERVER ERROR");
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });
         });
 }
 
@@ -44,11 +54,15 @@ const setIniciarSesion = (request, response) => {
     const { user, pass } = request.body
 
     if(!user || user.trim() == '') {
-        return response.status(400).send("Ingrese usuario");
+        return response.status(400).send({
+            message: "Ingrese usuario"
+        });
     }
 
     if(!pass || pass.trim() == '') {
-        return response.status(400).send("Ingrese clave");
+        return response.status(400).send({
+            message: "Ingrese clave"
+        });
     }
 
     data_access
@@ -58,12 +72,16 @@ const setIniciarSesion = (request, response) => {
             if(result.rowCount > 0) {
                 response.status(200).json(result.rows);
             } else {
-                response.status(404).send("Datos no encontrados");
+                response.status(404).send({
+                    message: "Datos no encontrados"
+                });
             }
         })
         .catch(err => {
             console.log(err);
-            return response.status(500).send("INTERNAL SERVER ERROR");
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });
         });
 }
 
