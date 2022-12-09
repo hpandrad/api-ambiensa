@@ -13,7 +13,10 @@ const routers = require('./app/routes/index');
 
 app.use(cors()); 
 
-
+app.use((error, req, res, next) => {
+    console.error(error.stack);
+    res.status(500).send('Something Broke!');
+});
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
