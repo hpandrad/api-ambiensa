@@ -43,6 +43,10 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors())
 
+app.use(function (req, res, next) {
+    res.json({msg: PORT})
+  })
+
 app.get('/products/:id', function (req, res, next) {
   res.json({msg: 'This is CORS-enabled for all origins!'})
 })
