@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(routers);
+app.use(routers);    
 
 app.listen(PORT, () => {
     console.log(`App running on port *:${PORT}.`);
