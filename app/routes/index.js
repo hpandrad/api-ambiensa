@@ -14,4 +14,8 @@ router.get('/', (request, response) => {
     response.send('Hola mundo cruel... jajajaja..!');
 });
 
+router.get('/test', (request, response) => {
+    response.send('ESTA ES UNA PRUEBA...');
+});
+
 module.exports = router;
