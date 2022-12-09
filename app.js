@@ -5,6 +5,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const routers = require('./app/routes');
 
+const http = require('http').Server(app);
+
 // var corsOptions = {
 //   origin: "http://localhost:8081"
 // };
@@ -19,6 +21,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(routers);
 
-app.listen(PORT, () => {
+http.listen(PORT, () => {
     console.log(`App running on port *:${PORT}.`);
 });
