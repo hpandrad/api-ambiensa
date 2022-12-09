@@ -2,9 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require("cors");
 const app = express();
-// const controllers = require('./app/controllers/postgresql.controller');
-const controllers = require('./app/controllers/mysql.controller');
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
+const routers = require('./app/routes');
 
 var corsOptions = {
   origin: "http://localhost:8081"
@@ -18,17 +17,7 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/', (request, response) => {
-  response.json({ message: 'Hola mundo!' });
-});
-
-app.get('/test', (request, response) => {
-  response.json({ message: 'Esto es una prueba' });
-});
-
-app.get('/empresas', controllers.getEmpresas);
-app.get('/empresaPorId/:id', controllers.getEmpresaPorId);
-app.post('/login', controllers.setIniciarSesion)
+app.use(routers);
 
 app.listen(PORT, () => {
     console.log(`App running on port *:${PORT}.`);
