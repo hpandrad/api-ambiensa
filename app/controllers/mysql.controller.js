@@ -8,7 +8,7 @@ const getEmpresas = (request, response) => {
             if(result.length > 0) {
                 response.status(200).json(result);
             } else {
-                response.status(201).send({
+                response.status(404).send({
                     message: "Datos no encontrados"
                 });
             }
