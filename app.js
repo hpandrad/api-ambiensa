@@ -47,6 +47,10 @@ app.use(function (req, res, next) {
     res.json({msg: PORT})
   })
 
+  app.get('/', function (req, res, next) {
+    res.json({msg: 'root'})
+  })
+
 app.get('/products/:id', function (req, res, next) {
   res.json({msg: 'This is CORS-enabled for all origins!'})
 })
