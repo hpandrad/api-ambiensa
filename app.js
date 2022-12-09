@@ -11,7 +11,9 @@ const routers = require('./app/routes/index');
 
 // app.use(cors(corsOptions));
 
-app.use(cors());
+app.use(cors()); 
+
+
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
