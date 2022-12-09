@@ -19,7 +19,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (request, response) => {
-  response.json({ message: 'Hola mundo!' });
+  // response.json({ message: 'Hola mundo!' });
+  response.send(controllers.getEmpresas(request, response));
 });
 
 app.get('/empresas', controllers.getEmpresas);
