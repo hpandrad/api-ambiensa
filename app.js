@@ -5,11 +5,13 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const routers = require('./app/routes/index');
 
-var corsOptions = {
-  origin: `https://localhost:${PORT}`
-};
+// var corsOptions = {
+//   origin: `https://localhost:${PORT}`
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+
+app.use(cors());
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
