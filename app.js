@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 // const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 3000;
-const routers = require('./app/routes');
+const routers = require('./app/routes/index');
 
 // var corsOptions = {
 //   origin: "http://localhost:8081"
