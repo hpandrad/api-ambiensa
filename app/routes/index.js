@@ -18,5 +18,6 @@ router.post('/login', controllers.setIniciarSesion);
 router.get('/roles/:empresa', controllers.getRoles);
 router.get('/roles/:empresa/:rol', controllers.getRolPorId);
 router.get('/porcentajes/:empresa', controllers.getPorcentajes);
+router.get('/capitulos/:empresa', controllers.getCapitulos);
 
 module.exports = router;

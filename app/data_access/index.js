@@ -50,9 +50,22 @@ async function ConsultaPorcentajes(idEmpresa){
     return result;
 }
 
+async function ConsultaCapitulos(idEmpresa){
+    let query = '';
+    query += 'SELECT id, descripcion ';
+    query += 'FROM Capitulo ';    
+    query += 'WHERE id_empresa = $1 ';
+    query += 'ORDER BY orden';
+    
+    let result = await ambiensa_db.query(query, [idEmpresa]);
+
+    return result;
+}
+
 module.exports = {    
     ValidaUsuario,
     ConsultaRoles,
     ConsultaRol,
     ConsultaPorcentajes,
+    ConsultaCapitulos,
 }

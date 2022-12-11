@@ -129,9 +129,39 @@ const getPorcentajes = (request, response) => {
         });
 }
 
+const getCapitulos = (request, response) => {
+    const idEmpresa = parseInt(request.params.empresa)    
+
+    if(idEmpresa <= 0) {
+        return response.status(400).send({
+            message: "Empresa no existe"
+        });
+    }
+
+    data_access
+        .ConsultaCapitulos(idEmpresa)        
+        .then(result => {
+            // console.log(result);
+            if(result.rowCount > 0) {
+                response.status(200).json(result.rows);
+            } else {
+                response.status(404).send({
+                    message: "Datos no encontrados"
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });
+        });
+}
+
 module.exports = {
     setIniciarSesion,
     getRoles,
     getRolPorId,
     getPorcentajes,
+    getCapitulos,
 }
