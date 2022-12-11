@@ -2,6 +2,6 @@ module.exports = {
     HOST: "localhost",
     USER: "postgres",
     PASSWORD: "Pruebasa1",
-    DB: "fiscalizacion_db",
+    DB: "AmbiensaDB",
     PORT: "5432"
   };
