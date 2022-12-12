@@ -130,6 +130,10 @@ INSERT INTO EtapaProyecto(id_empresa,id_proyecto,id,descripcion) VALUES(1,1,1,'E
 INSERT INTO EtapaProyecto(id_empresa,id_proyecto,id,descripcion) VALUES(1,1,2,'ETAPA 2');
 INSERT INTO EtapaProyecto(id_empresa,id_proyecto,id,descripcion) VALUES(1,1,3,'ETAPA 3');
 
-
+SELECT * 
+FROM Usuario u
+INNER JOIN Rol r on  
+WHERE usuario = 'handrade' 
+AND clave = 'prueba123';
 
 select * from information_schema.columns where table_name = 'Capitulo'; 

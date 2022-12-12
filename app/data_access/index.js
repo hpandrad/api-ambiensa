@@ -1,5 +1,6 @@
 const db = require('../connections/index');
 const ambiensa_db = db.ambiensaPool;
+const fiscalizacion_db = db.fiscalizacionPool;
 
 async function ValidaUsuario(usuario, clave){
     let query = '';
@@ -31,7 +32,7 @@ async function ConsultaRol(idEmpresa, idRol){
     query += 'SELECT id, descripcion ';
     query += 'FROM Rol ';    
     query += 'WHERE id_empresa = $1 ';
-    query += 'AND id = $2';
+    query += 'AND id = $2 ';
 
     let result = await ambiensa_db.query(query, [idEmpresa, idRol]);
 
@@ -62,10 +63,83 @@ async function ConsultaCapitulos(idEmpresa){
     return result;
 }
 
+async function InsertaPorcentajePorCapitulo(idEmpresa, idCapitulo, idPorcentaje){
+    let query = '';
+    query += 'INSERT INTO Configuracion_PorcentajePorCapitulo(id_empresa, id_capitulo, id_porcentaje) ';
+    query += 'VALUES($1, $2, $3)';
+    let result = false;    
+
+    try {
+        await fiscalizacion_db.query(query, [idEmpresa, idCapitulo, idPorcentaje]);
+        result = true;
+    } catch(error) {
+        console.error(error.stack);        
+    }
+
+    return result;
+}
+
+async function ConsultaPorcentajesPorCapitulo(idEmpresa, idCapitulo){
+    let query = '';
+    query += 'SELECT id_empresa, id_capitulo, id_porcentaje ';
+    query += 'FROM Configuracion_PorcentajePorCapitulo ';    
+    query += 'WHERE id_empresa = $1 ';
+    query += 'AND id_capitulo = $2';
+    
+    let result = await fiscalizacion_db.query(query, [idEmpresa, idCapitulo]);
+
+    return result;
+}
+
+async function ConsultaModelos(idEmpresa){
+    let query = '';
+    query += 'SELECT id, descripcion ';
+    query += 'FROM Modelo ';    
+    query += 'WHERE id_empresa = $1 ';
+    query += 'ORDER BY descripcion';
+    
+    let result = await ambiensa_db.query(query, [idEmpresa]);
+
+    return result;
+}
+
+async function InsertaCapituloPorModelo(idEmpresa, idModelo, idCapitulo){
+    let query = '';
+    query += 'INSERT INTO Configuracion_CapituloPorModelo(id_empresa, id_modelo, id_capitulo) ';
+    query += 'VALUES($1, $2, $3)';
+    let result = false;    
+
+    try {
+        await fiscalizacion_db.query(query, [idEmpresa, idModelo, idCapitulo]);
+        result = true;
+    } catch(error) {
+        console.error(error.stack);        
+    }
+
+    return result;
+}
+
+async function ConsultaCapituloPorModelo(idEmpresa, idModelo){
+    let query = '';
+    query += 'SELECT id_empresa, id_modelo, id_capitulo ';
+    query += 'FROM Configuracion_CapituloPorModelo ';    
+    query += 'WHERE id_empresa = $1 ';
+    query += 'AND id_modelo = $2';
+    
+    let result = await fiscalizacion_db.query(query, [idEmpresa, idModelo]);
+
+    return result;
+}
+
 module.exports = {    
     ValidaUsuario,
     ConsultaRoles,
     ConsultaRol,
     ConsultaPorcentajes,
     ConsultaCapitulos,
+    InsertaPorcentajePorCapitulo,
+    ConsultaPorcentajesPorCapitulo,
+    ConsultaModelos,
+    InsertaCapituloPorModelo,
+    ConsultaCapituloPorModelo,
 }

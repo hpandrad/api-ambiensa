@@ -19,5 +19,10 @@ router.get('/roles/:empresa', controllers.getRoles);
 router.get('/roles/:empresa/:rol', controllers.getRolPorId);
 router.get('/porcentajes/:empresa', controllers.getPorcentajes);
 router.get('/capitulos/:empresa', controllers.getCapitulos);
+router.post('/porcentajeporcapitulo', controllers.setPorcentajePorCapitulo);
+router.get('/porcentajeporcapitulo/:empresa/:capitulo', controllers.getPorcentajePorCapitulo);
+router.get('/modelos/:empresa', controllers.getModelos);
+router.post('/capitulopormodelo', controllers.setCapituloPorModelo);
+router.get('/capitulopormodelo/:empresa/:modelo', controllers.getCapituloPorModelo);
 
 module.exports = router;
