@@ -131,6 +131,46 @@ async function ConsultaCapituloPorModelo(idEmpresa, idModelo){
     return result;
 }
 
+async function ConsultaEtapaConstructiva(idEmpresa){
+    let query = '';
+    query += 'SELECT id, descripcion ';
+    query += 'FROM EtapaConstructiva ';    
+    query += 'WHERE id_empresa = $1 ';
+    query += 'ORDER BY descripcion';
+    
+    let result = await ambiensa_db.query(query, [idEmpresa]);
+
+    return result;
+}
+
+async function InsertaEtapaConstructivaPorCapitulo(idEmpresa, idCapitulo, idPorcentaje, idEtapaConstructiva){
+    let query = '';
+    query += 'INSERT INTO Configuracion_EtapaConstructivaPorCapitulo(id_empresa, id_capitulo, id_porcentaje, id_etapaConstructiva) ';
+    query += 'VALUES($1, $2, $3, $4)';
+    let result = false;    
+
+    try {
+        await fiscalizacion_db.query(query, [idEmpresa, idCapitulo, idPorcentaje, idEtapaConstructiva]);
+        result = true;
+    } catch(error) {
+        console.error(error.stack);        
+    }
+
+    return result;
+}
+
+async function ConsultaEtapaConstructivaPorCapitulo(idEmpresa, idCapitulo){
+    let query = '';
+    query += 'SELECT id_empresa, id_capitulo, id_porcentaje, id_etapaConstructiva ';
+    query += 'FROM Configuracion_EtapaConstructivaPorCapitulo ';    
+    query += 'WHERE id_empresa = $1 ';
+    query += 'AND id_capitulo = $2';
+    
+    let result = await fiscalizacion_db.query(query, [idEmpresa, idCapitulo]);
+
+    return result;
+}
+
 module.exports = {    
     ValidaUsuario,
     ConsultaRoles,
@@ -141,5 +181,8 @@ module.exports = {
     ConsultaPorcentajesPorCapitulo,
     ConsultaModelos,
     InsertaCapituloPorModelo,
-    ConsultaCapituloPorModelo,    
+    ConsultaCapituloPorModelo,
+    ConsultaEtapaConstructiva,
+    InsertaEtapaConstructivaPorCapitulo,
+    ConsultaEtapaConstructivaPorCapitulo
 }

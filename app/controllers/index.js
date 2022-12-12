@@ -351,6 +351,124 @@ const getCapituloPorModelo = (request, response) => {
         });
 }
 
+const getEtapaConstructiva = (request, response) => {
+    const idEmpresa = parseInt(request.params.empresa)    
+
+    if(idEmpresa <= 0) {
+        return response.status(400).send({
+            message: "Empresa no existe"
+        });
+    }
+
+    data_access
+        .ConsultaEtapaConstructiva(idEmpresa)        
+        .then(result => {
+            // console.log(result);
+            if(result.rows.length > 0) {
+                response.status(200).json(result.rows);
+            } else {
+                response.status(404).send({
+                    message: "Datos no encontrados"
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });
+        });
+}
+
+const setEtapaConstructivaPorCapitulo = (request, response) => {
+    const { empresa, capitulo, porcentaje, etapaConstructiva } = request.body
+    const idEmpresa = parseInt(empresa);    
+    const idCapitulo = parseInt(capitulo);    
+    const idPorcentaje = parseInt(porcentaje);
+    const idEtapaConstructiva = parseInt(etapaConstructiva);
+
+    if(idEmpresa <= 0) {
+        return response.status(400).send({
+            message: "Empresa no existe"
+        });
+    }    
+
+    if(idCapitulo <= 0) {
+        return response.status(400).send({
+            message: "Capitulo no existe"
+        });
+    }
+    
+    if(idPorcentaje <= 0) {
+        return response.status(400).send({
+            message: "Porcentaje no existe"
+        });
+    }
+
+    if(idEtapaConstructiva <= 0) {
+        return response.status(400).send({
+            message: "Etapa Constructiva no existe"
+        });
+    }
+
+    data_access
+        .InsertaEtapaConstructivaPorCapitulo(idEmpresa, idCapitulo, idPorcentaje, idEtapaConstructiva)
+        .then(result => {
+            // console.log(result);
+            if(result) {
+                response.status(200).json({
+                    message: "Datos ingresador correctamente"
+                });
+            } else {
+                response.status(404).send({
+                    message: "Se produjo un error al insertar datos"
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });
+        });
+}
+
+const getEtapaConstructivaPorCapitulo = (request, response) => {
+    const idEmpresa = parseInt(request.params.empresa);
+    const idCapitulo = parseInt(request.params.capitulo);
+
+    if(idEmpresa <= 0) {
+        return response.status(400).send({
+            message: "Empresa no existe"
+        });
+    }
+
+    if(idCapitulo <= 0) {
+        return response.status(400).send({
+            message: "Capitulo no existe"
+        });
+    }
+
+    data_access
+        .ConsultaEtapaConstructivaPorCapitulo(idEmpresa, idCapitulo)        
+        .then(result => {
+            // console.log(result);
+            if(result.rows.length > 0) {
+                response.status(200).json(result.rows);
+            } else {
+                response.status(404).send({
+                    message: "Datos no encontrados"
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });
+        });
+}
+
 module.exports = {
     setIniciarSesion,
     getRoles,
@@ -361,5 +479,8 @@ module.exports = {
     getPorcentajePorCapitulo,
     getModelos,
     setCapituloPorModelo,
-    getCapituloPorModelo,    
+    getCapituloPorModelo,
+    getEtapaConstructiva,
+    setEtapaConstructivaPorCapitulo,
+    getEtapaConstructivaPorCapitulo,
 }

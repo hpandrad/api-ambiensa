@@ -24,5 +24,8 @@ router.get('/porcentajeporcapitulo/:empresa/:capitulo', controllers.getPorcentaj
 router.get('/modelos/:empresa', controllers.getModelos);
 router.post('/capitulopormodelo', controllers.setCapituloPorModelo);
 router.get('/capitulopormodelo/:empresa/:modelo', controllers.getCapituloPorModelo);
+router.get('/etapasconstructivas/:empresa', controllers.getEtapaConstructiva);
+router.post('/etapaconstructivaporcapitulo', controllers.setEtapaConstructivaPorCapitulo);
+router.get('/etapaconstructivaporcapitulo/:empresa/:capitulo', controllers.getEtapaConstructivaPorCapitulo);
 
 module.exports = router;
