@@ -19,7 +19,7 @@ const setIniciarSesion = (request, response) => {
         .ValidaUsuario(user, pass)        
         .then(result => {
             // console.log(result);
-            if(result.rowCount > 0) {
+            if(result.rows.length > 0) {
                 response.status(200).json(result.rows);
             } else {
                 response.status(404).send({
@@ -47,8 +47,8 @@ const getRoles = (request, response) => {
     data_access
         .ConsultaRoles(idEmpresa)        
         .then(result => {
-            // console.log(result);
-            if(result.rowCount > 0) {
+            console.log(result.rows.length);
+            if(result.rows.length > 0) {
                 response.status(200).json(result.rows);
             } else {
                 response.status(404).send({
@@ -58,10 +58,9 @@ const getRoles = (request, response) => {
         })
         .catch(err => {
             console.log(err);
-            // return response.status(500).send({
-            //     message: "INTERNAL SERVER ERROR"
-            // });
-            return response.status(500).send(err);
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });            
         });
 }
 
@@ -85,7 +84,7 @@ const getRolPorId = (request, response) => {
         .ConsultaRol(idEmpresa, idRol)        
         .then(result => {
             // console.log(result);
-            if(result.rowCount > 0) {
+            if(result.rows.length > 0) {
                 response.status(200).json(result.rows);
             } else {
                 response.status(404).send({
@@ -114,7 +113,7 @@ const getPorcentajes = (request, response) => {
         .ConsultaPorcentajes(idEmpresa)        
         .then(result => {
             // console.log(result);
-            if(result.rowCount > 0) {
+            if(result.rows.length > 0) {
                 response.status(200).json(result.rows);
             } else {
                 response.status(404).send({
@@ -143,7 +142,7 @@ const getCapitulos = (request, response) => {
         .ConsultaCapitulos(idEmpresa)        
         .then(result => {
             // console.log(result);
-            if(result.rowCount > 0) {
+            if(result.rows.length > 0) {
                 response.status(200).json(result.rows);
             } else {
                 response.status(404).send({
@@ -225,7 +224,7 @@ const getPorcentajePorCapitulo = (request, response) => {
         .ConsultaPorcentajesPorCapitulo(idEmpresa, idCapitulo)        
         .then(result => {
             // console.log(result);
-            if(result.rowCount > 0) {
+            if(result.rows.length > 0) {
                 response.status(200).json(result.rows);
             } else {
                 response.status(404).send({
@@ -254,7 +253,7 @@ const getModelos = (request, response) => {
         .ConsultaModelos(idEmpresa)        
         .then(result => {
             // console.log(result);
-            if(result.rowCount > 0) {
+            if(result.rows.length > 0) {
                 response.status(200).json(result.rows);
             } else {
                 response.status(404).send({
@@ -336,7 +335,7 @@ const getCapituloPorModelo = (request, response) => {
         .ConsultaCapituloPorModelo(idEmpresa, idModelo)        
         .then(result => {
             // console.log(result);
-            if(result.rowCount > 0) {
+            if(result.rows.length > 0) {
                 response.status(200).json(result.rows);
             } else {
                 response.status(404).send({

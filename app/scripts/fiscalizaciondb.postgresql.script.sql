@@ -1,3 +1,4 @@
+DROP TABLE Configuracion_PeriodoFiscalizacion;
 DROP TABLE Configuracion_Parametro;
 DROP TABLE Configuracion_NivelCargaAleatoria;
 DROP TABLE Configuracion_EstadoRevision;
