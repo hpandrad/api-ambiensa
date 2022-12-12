@@ -362,5 +362,5 @@ module.exports = {
     getPorcentajePorCapitulo,
     getModelos,
     setCapituloPorModelo,
-    getCapituloPorModelo,
+    getCapituloPorModelo,    
 }

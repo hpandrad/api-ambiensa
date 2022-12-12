@@ -141,5 +141,5 @@ module.exports = {
     ConsultaPorcentajesPorCapitulo,
     ConsultaModelos,
     InsertaCapituloPorModelo,
-    ConsultaCapituloPorModelo,
+    ConsultaCapituloPorModelo,    
 }
