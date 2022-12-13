@@ -63,14 +63,18 @@ async function ConsultaCapitulos(idEmpresa){
     return result;
 }
 
-async function InsertaPorcentajePorCapitulo(idEmpresa, idCapitulo, idPorcentaje){
-    let query = '';
-    query += 'INSERT INTO Configuracion_PorcentajePorCapitulo(id_empresa, id_capitulo, id_porcentaje) ';
-    query += 'VALUES($1, $2, $3)';
+async function InsertaPorcentajePorCapitulo(idEmpresa, idCapitulo, arrPorcentajes){
+    let deleteQuery = 'DELETE FROM Configuracion_PorcentajePorCapitulo WHERE id_empresa = $1 AND id_capitulo = $2';    
+    let insertQuery = 'INSERT INTO Configuracion_PorcentajePorCapitulo(id_empresa, id_capitulo, id_porcentaje) VALUES($1, $2, $3)';    
     let result = false;    
 
     try {
-        await fiscalizacion_db.query(query, [idEmpresa, idCapitulo, idPorcentaje]);
+        await fiscalizacion_db.query(deleteQuery, [idEmpresa, idCapitulo]);
+
+        arrPorcentajes.forEach(async (idPorcentaje, index) => {
+            await fiscalizacion_db.query(insertQuery, [idEmpresa, idCapitulo, idPorcentaje]);    
+        });
+        
         result = true;
     } catch(error) {
         console.error(error.stack);        
@@ -103,20 +107,24 @@ async function ConsultaModelos(idEmpresa){
     return result;
 }
 
-async function InsertaCapituloPorModelo(idEmpresa, idModelo, idCapitulo){
-    let query = '';
-    query += 'INSERT INTO Configuracion_CapituloPorModelo(id_empresa, id_modelo, id_capitulo) ';
-    query += 'VALUES($1, $2, $3)';
+async function InsertaCapituloPorModelo(idEmpresa, idModelo, arrCapitulo){
+    let deleteQuery = 'DELETE FROM Configuracion_CapituloPorModelo WHERE id_empresa = $1 AND id_modelo = $2';    
+    let insertQuery = 'INSERT INTO Configuracion_CapituloPorModelo(id_empresa, id_modelo, id_capitulo) VALUES($1, $2, $3)';    
     let result = false;    
 
     try {
-        await fiscalizacion_db.query(query, [idEmpresa, idModelo, idCapitulo]);
+        await fiscalizacion_db.query(deleteQuery, [idEmpresa, idModelo]);
+
+        arrCapitulo.forEach(async (idCapitulo, index) => {
+            await fiscalizacion_db.query(insertQuery, [idEmpresa, idModelo, idCapitulo]);    
+        });
+        
         result = true;
     } catch(error) {
         console.error(error.stack);        
     }
 
-    return result;
+    return result;  
 }
 
 async function ConsultaCapituloPorModelo(idEmpresa, idModelo){
@@ -143,14 +151,18 @@ async function ConsultaEtapaConstructiva(idEmpresa){
     return result;
 }
 
-async function InsertaEtapaConstructivaPorCapitulo(idEmpresa, idCapitulo, idPorcentaje, idEtapaConstructiva){
-    let query = '';
-    query += 'INSERT INTO Configuracion_EtapaConstructivaPorCapitulo(id_empresa, id_capitulo, id_porcentaje, id_etapaConstructiva) ';
-    query += 'VALUES($1, $2, $3, $4)';
+async function InsertaEtapaConstructivaPorCapitulo(idEmpresa, idCapitulo, arrEtapasConstructivasPorPorcentajes){
+    let deleteQuery = 'DELETE FROM Configuracion_EtapaConstructivaPorCapitulo WHERE id_empresa = $1 AND id_capitulo = $2';    
+    let insertQuery = 'INSERT INTO Configuracion_EtapaConstructivaPorCapitulo(id_empresa, id_capitulo, id_porcentaje, id_etapaConstructiva) VALUES($1, $2, $3, $4)';    
     let result = false;    
 
     try {
-        await fiscalizacion_db.query(query, [idEmpresa, idCapitulo, idPorcentaje, idEtapaConstructiva]);
+        await fiscalizacion_db.query(deleteQuery, [idEmpresa, idCapitulo]);
+
+        arrEtapasConstructivasPorPorcentajes.forEach(async (element, index) => {
+            await fiscalizacion_db.query(insertQuery, [idEmpresa, idCapitulo, element.porcentaje, element.etapaConstructiva ]);    
+        });
+        
         result = true;
     } catch(error) {
         console.error(error.stack);        
@@ -177,7 +189,7 @@ module.exports = {
     ConsultaRol,
     ConsultaPorcentajes,
     ConsultaCapitulos,
-    InsertaPorcentajePorCapitulo,
+    InsertaPorcentajePorCapitulo,    
     ConsultaPorcentajesPorCapitulo,
     ConsultaModelos,
     InsertaCapituloPorModelo,

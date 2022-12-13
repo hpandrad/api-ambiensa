@@ -159,10 +159,10 @@ const getCapitulos = (request, response) => {
 }
 
 const setPorcentajePorCapitulo = (request, response) => {
-    const { empresa, capitulo, porcentaje } = request.body
+    const { empresa, capitulo, porcentajes } = request.body
     const idEmpresa = parseInt(empresa);
     const idCapitulo = parseInt(capitulo);
-    const idPorcentaje = parseInt(porcentaje);
+    const arrPorcentajes = porcentajes;        
 
     if(idEmpresa <= 0) {
         return response.status(400).send({
@@ -176,19 +176,19 @@ const setPorcentajePorCapitulo = (request, response) => {
         });
     }
 
-    if(idPorcentaje <= 0) {
+    if(arrPorcentajes == null || arrPorcentajes.length == 0) {
         return response.status(400).send({
-            message: "Porcentaje no existe"
+            message: "Debe seleccionar al menos 1 porcentaje"
         });
     }
 
     data_access
-        .InsertaPorcentajePorCapitulo(idEmpresa, idCapitulo, idPorcentaje)
+        .InsertaPorcentajePorCapitulo(idEmpresa, idCapitulo, arrPorcentajes)
         .then(result => {
             // console.log(result);
             if(result) {
                 response.status(200).json({
-                    message: "Datos ingresador correctamente"
+                    message: "Datos ingresados correctamente"
                 });
             } else {
                 response.status(404).send({
@@ -270,10 +270,10 @@ const getModelos = (request, response) => {
 }
 
 const setCapituloPorModelo = (request, response) => {
-    const { empresa, modelo, capitulo } = request.body
+    const { empresa, modelo, capitulos } = request.body
     const idEmpresa = parseInt(empresa);
     const idModelo = parseInt(modelo);
-    const idCapitulo = parseInt(capitulo);    
+    const arrCapitulo = capitulos;    
 
     if(idEmpresa <= 0) {
         return response.status(400).send({
@@ -287,19 +287,19 @@ const setCapituloPorModelo = (request, response) => {
         });
     }
 
-    if(idCapitulo <= 0) {
+    if(arrCapitulo == null || arrCapitulo.length == 0) {
         return response.status(400).send({
-            message: "Capitulo no existe"
+            message: "Debe seleccionar al menos 1 capitulo"
         });
-    }    
+    }
 
     data_access
-        .InsertaCapituloPorModelo(idEmpresa, idModelo, idCapitulo)
+        .InsertaCapituloPorModelo(idEmpresa, idModelo, arrCapitulo)
         .then(result => {
             // console.log(result);
             if(result) {
                 response.status(200).json({
-                    message: "Datos ingresador correctamente"
+                    message: "Datos ingresados correctamente"
                 });
             } else {
                 response.status(404).send({
@@ -381,11 +381,10 @@ const getEtapaConstructiva = (request, response) => {
 }
 
 const setEtapaConstructivaPorCapitulo = (request, response) => {
-    const { empresa, capitulo, porcentaje, etapaConstructiva } = request.body
+    const { empresa, capitulo, etapasConstructivasPorPorcentajes } = request.body
     const idEmpresa = parseInt(empresa);    
-    const idCapitulo = parseInt(capitulo);    
-    const idPorcentaje = parseInt(porcentaje);
-    const idEtapaConstructiva = parseInt(etapaConstructiva);
+    const idCapitulo = parseInt(capitulo);        
+    const arrEtapasConstructivasPorPorcentajes = etapasConstructivasPorPorcentajes;
 
     if(idEmpresa <= 0) {
         return response.status(400).send({
@@ -399,25 +398,36 @@ const setEtapaConstructivaPorCapitulo = (request, response) => {
         });
     }
     
-    if(idPorcentaje <= 0) {
+    if(arrEtapasConstructivasPorPorcentajes == null || arrEtapasConstructivasPorPorcentajes.length == 0) {
         return response.status(400).send({
-            message: "Porcentaje no existe"
+            message: "Debe relacionar al menos 1 porcentaje con 1 etapa constructiva"
         });
     }
 
-    if(idEtapaConstructiva <= 0) {
-        return response.status(400).send({
-            message: "Etapa Constructiva no existe"
-        });
-    }
+    arrEtapasConstructivasPorPorcentajes.forEach((element, index) => {        
+        const idPorcentaje = parseInt(element.porcentaje);
+        const idEtapaConstructiva = parseInt(element.etapaConstructiva);        
+        
+        if(idPorcentaje <= 0) {
+            return response.status(400).send({
+                message: "Porcentaje no existe"
+            });
+        }
+
+        if(idEtapaConstructiva <= 0) {
+            return response.status(400).send({
+                message: "Etapa Constructiva no existe"
+            });
+        }
+    });    
 
     data_access
-        .InsertaEtapaConstructivaPorCapitulo(idEmpresa, idCapitulo, idPorcentaje, idEtapaConstructiva)
+        .InsertaEtapaConstructivaPorCapitulo(idEmpresa, idCapitulo, arrEtapasConstructivasPorPorcentajes)
         .then(result => {
             // console.log(result);
             if(result) {
                 response.status(200).json({
-                    message: "Datos ingresador correctamente"
+                    message: "Datos ingresados correctamente"
                 });
             } else {
                 response.status(404).send({
@@ -475,7 +485,7 @@ module.exports = {
     getRolPorId,
     getPorcentajes,
     getCapitulos,
-    setPorcentajePorCapitulo,
+    setPorcentajePorCapitulo,    
     getPorcentajePorCapitulo,
     getModelos,
     setCapituloPorModelo,
