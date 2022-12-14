@@ -479,6 +479,181 @@ const getEtapaConstructivaPorCapitulo = (request, response) => {
         });
 }
 
+const setEstadoRevision = (request, response) => {
+    const { empresa, descripcion } = request.body;
+    const id = request.params.id;    
+    const idEmpresa = parseInt(empresa);
+    const strDescripcion = descripcion.trim();
+    let idEstadoRevision = 0;
+
+    if(idEmpresa <= 0) {
+        return response.status(400).send({
+            message: "Empresa no existe"
+        });
+    }    
+
+    if(strDescripcion == '') {
+        return response.status(400).send({
+            message: "Ingrese una descripción"
+        });
+    }
+
+    if (id !== undefined) { 
+        idEstadoRevision = parseInt(id);
+
+        if(idEstadoRevision <= 0) {
+            return response.status(400).send({
+                message: "Estado de Revisión no existe"
+            });
+        }   
+
+        data_access
+            .ActualizaEstadoRevision(idEmpresa, idEstadoRevision, strDescripcion)
+            .then(result => {
+                // console.log(result);
+                if(result.rows.length > 0) {
+                    response.status(200).json({
+                        id: result.rows[0].id
+                    });
+                } else {
+                    response.status(404).send({
+                        message: "Se produjo un error al actualizar datos"
+                    });
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                return response.status(500).send({
+                    message: "INTERNAL SERVER ERROR",
+                });
+            });
+    } else {
+        data_access
+            .InsertaEstadoRevision(idEmpresa, strDescripcion)
+            .then(result => {
+                // console.log(result);
+                if(result.rows.length > 0) {
+                    response.status(200).json({
+                        id: result.rows[0].id
+                    });
+                } else {
+                    response.status(404).send({
+                        message: "Se produjo un error al insertar datos"
+                    });
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                return response.status(500).send({
+                    message: "INTERNAL SERVER ERROR",
+                });
+            });
+    }
+}
+
+const delEstadoRevision = (request, response) => {
+    const idEmpresa = parseInt(request.params.empresa);
+    const idEstadoRevision = parseInt(request.params.id);
+
+    if(idEmpresa <= 0) {
+        return response.status(400).send({
+            message: "Empresa no existe"
+        });
+    }    
+
+    if(idEstadoRevision <= 0) {
+        return response.status(400).send({
+            message: "Estado de Revisión no existe"
+        });
+    }   
+
+    data_access
+        .EliminaEstadoRevision(idEmpresa, idEstadoRevision)
+        .then(result => {
+            // console.log(result);
+            if(result) {
+                response.status(200).json({
+                    message: "Datos eliminados correctamente"
+                });
+            } else {
+                response.status(404).send({
+                    message: "Se produjo un error al insertar datos"
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });
+        });
+}
+
+const getEstadoRevision = (request, response) => {
+    const idEmpresa = parseInt(request.params.empresa)    
+
+    if(idEmpresa <= 0) {
+        return response.status(400).send({
+            message: "Empresa no existe"
+        });
+    }
+
+    data_access
+        .ConsultaEstadoRevision(idEmpresa)        
+        .then(result => {
+            console.log(result.rows.length);
+            if(result.rows.length > 0) {
+                response.status(200).json(result.rows);
+            } else {
+                response.status(404).send({
+                    message: "Datos no encontrados"
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });            
+        });
+}
+
+const getEstadoRevisionPorId = (request, response) => {
+    const idEmpresa = parseInt(request.params.empresa);
+    const idEstadoRevision = parseInt(request.params.id);
+
+    if(idEmpresa <= 0) {
+        return response.status(400).send({
+            message: "Empresa no existe"
+        });
+    }
+
+    if(idEstadoRevision <= 0) {
+        return response.status(400).send({
+            message: "Estado de Revisión no existe"
+        });
+    }   
+
+    data_access
+        .ConsultaEstadoRevisionPorId(idEmpresa, idEstadoRevision)        
+        .then(result => {
+            console.log(result.rows.length);
+            if(result.rows.length > 0) {
+                response.status(200).json(result.rows);
+            } else {
+                response.status(404).send({
+                    message: "Datos no encontrados"
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });            
+        });
+}
+
 module.exports = {
     setIniciarSesion,
     getRoles,
@@ -493,4 +668,8 @@ module.exports = {
     getEtapaConstructiva,
     setEtapaConstructivaPorCapitulo,
     getEtapaConstructivaPorCapitulo,
+    setEstadoRevision,
+    delEstadoRevision,
+    getEstadoRevision,
+    getEstadoRevisionPorId
 }

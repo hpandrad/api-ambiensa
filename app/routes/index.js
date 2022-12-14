@@ -27,5 +27,10 @@ router.get('/capitulopormodelo/:empresa/:modelo', controllers.getCapituloPorMode
 router.get('/etapasconstructivas/:empresa', controllers.getEtapaConstructiva);
 router.post('/etapaconstructivaporcapitulo', controllers.setEtapaConstructivaPorCapitulo);
 router.get('/etapaconstructivaporcapitulo/:empresa/:capitulo', controllers.getEtapaConstructivaPorCapitulo);
+router.post('/estadorevision', controllers.setEstadoRevision);
+router.put('/estadorevision/:id', controllers.setEstadoRevision);
+router.delete('/estadorevision/:empresa/:id', controllers.delEstadoRevision);
+router.get('/estadorevision/:empresa', controllers.getEstadoRevision);
+router.get('/estadorevision/:empresa/:id', controllers.getEstadoRevisionPorId);
 
 module.exports = router;

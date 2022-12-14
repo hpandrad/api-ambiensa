@@ -183,6 +183,59 @@ async function ConsultaEtapaConstructivaPorCapitulo(idEmpresa, idCapitulo){
     return result;
 }
 
+async function InsertaEstadoRevision(idEmpresa, descripcion){    
+    let insertQuery = 'INSERT INTO Configuracion_EstadoRevision(id_empresa, descripcion) VALUES($1, $2) RETURNING id';    
+    let result = await fiscalizacion_db.query(insertQuery, [idEmpresa, descripcion]);
+
+    return result;
+}
+
+async function ActualizaEstadoRevision(idEmpresa, idEstadoRevision, descripcion){    
+    let updateQuery = 'UPDATE Configuracion_EstadoRevision SET descripcion = $1 WHERE id_empresa = $2 AND id = $3 RETURNING id';    
+    let result = await fiscalizacion_db.query(updateQuery, [descripcion, idEmpresa, idEstadoRevision]);
+
+    return result;
+}
+
+async function EliminaEstadoRevision(idEmpresa, idEstadoRevision){    
+    let deleteQuery = 'DELETE FROM Configuracion_EstadoRevision WHERE id_empresa = $1 AND id = $2';       
+
+    let result = false;    
+
+    try {
+        await fiscalizacion_db.query(deleteQuery, [idEmpresa, idEstadoRevision]);
+
+        result = true;
+    } catch(error) {
+        console.error(error.stack);        
+    }
+
+    return result;
+}
+
+async function ConsultaEstadoRevision(idEmpresa){
+    let query = '';
+    query += 'SELECT id_empresa, id, descripcion ';
+    query += 'FROM Configuracion_EstadoRevision ';    
+    query += 'WHERE id_empresa = $1 ';    
+    
+    let result = await fiscalizacion_db.query(query, [idEmpresa]);
+
+    return result;
+}
+
+async function ConsultaEstadoRevisionPorId(idEmpresa, idEstadoRevision){
+    let query = '';
+    query += 'SELECT id_empresa, id, descripcion ';
+    query += 'FROM Configuracion_EstadoRevision ';    
+    query += 'WHERE id_empresa = $1 ';
+    query += 'AND id = $2';
+    
+    let result = await fiscalizacion_db.query(query, [idEmpresa, idEstadoRevision]);
+
+    return result;
+}
+
 module.exports = {    
     ValidaUsuario,
     ConsultaRoles,
@@ -196,5 +249,10 @@ module.exports = {
     ConsultaCapituloPorModelo,
     ConsultaEtapaConstructiva,
     InsertaEtapaConstructivaPorCapitulo,
-    ConsultaEtapaConstructivaPorCapitulo
+    ConsultaEtapaConstructivaPorCapitulo,
+    InsertaEstadoRevision,
+    ActualizaEstadoRevision,
+    EliminaEstadoRevision,
+    ConsultaEstadoRevision,
+    ConsultaEstadoRevisionPorId,
 }
