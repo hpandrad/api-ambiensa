@@ -176,11 +176,11 @@ const setPorcentajePorCapitulo = (request, response) => {
         });
     }
 
-    if(arrPorcentajes == null || arrPorcentajes.length == 0) {
-        return response.status(400).send({
-            message: "Debe seleccionar al menos 1 porcentaje"
-        });
-    }
+    // if(arrPorcentajes == null || arrPorcentajes.length == 0) {
+    //     return response.status(400).send({
+    //         message: "Debe seleccionar al menos 1 porcentaje"
+    //     });
+    // }
 
     data_access
         .InsertaPorcentajePorCapitulo(idEmpresa, idCapitulo, arrPorcentajes)
@@ -601,7 +601,7 @@ const getEstadoRevision = (request, response) => {
     data_access
         .ConsultaEstadoRevision(idEmpresa)        
         .then(result => {
-            console.log(result.rows.length);
+            // console.log(result.rows.length);
             if(result.rows.length > 0) {
                 response.status(200).json(result.rows);
             } else {
@@ -654,6 +654,231 @@ const getEstadoRevisionPorId = (request, response) => {
         });
 }
 
+const setNivelCargaAleatoria = (request, response) => {
+    const { empresa, nivelesCarga } = request.body
+    const idEmpresa = parseInt(empresa);    
+    const arrNivelesCarga = nivelesCarga;        
+
+    if(idEmpresa <= 0) {
+        return response.status(400).send({
+            message: "Empresa no existe"
+        });
+    }
+
+    if(arrNivelesCarga == null || arrNivelesCarga.length == 0) {
+        return response.status(400).send({
+            message: "Debe enviar al menos 1 nivel de carga"
+        });
+    }
+
+    arrNivelesCarga.forEach((element, index) => {        
+        const idRol = parseInt(element.rol);
+        const porcentaje = parseFloat(element.porcentaje);
+        const idEstadoRevision = parseInt(element.estadorevision);        
+        
+        if(idRol <= 0) {
+            return response.status(400).send({
+                message: "Rol no existe"
+            });
+        }
+
+        if(idEstadoRevision <= 0) {
+            return response.status(400).send({
+                message: "Estado de revisión no existe"
+            });
+        }
+
+        if(porcentaje <= 0) {
+            return response.status(400).send({
+                message: "Ingrese un porcentaje de registro"
+            });
+        }
+    });    
+
+    data_access
+        .InsertaNivelCargaAleatoria(idEmpresa, arrNivelesCarga)
+        .then(result => {
+            // console.log(result);
+            if(result) {
+                response.status(200).json({
+                    message: "Datos ingresados correctamente"
+                });
+            } else {
+                response.status(404).send({
+                    message: "Se produjo un error al insertar datos"
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });
+        });
+}
+
+const getNivelCargaAleatoria = (request, response) => {
+    const idEmpresa = parseInt(request.params.empresa)    
+
+    if(idEmpresa <= 0) {
+        return response.status(400).send({
+            message: "Empresa no existe"
+        });
+    }
+
+    data_access
+        .ConsultaNivelCargaAleatoria(idEmpresa)        
+        .then(result => {
+            // console.log(result.rows.length);
+            if(result.rows.length > 0) {
+                response.status(200).json(result.rows);
+            } else {
+                response.status(404).send({
+                    message: "Datos no encontrados"
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });            
+        });
+}
+
+const setParametro = (request, response) => {
+    const { empresa, totalImagenes } = request.body
+    const idEmpresa = parseInt(empresa);    
+    const cargaImagenes = parseInt(totalImagenes);    
+
+    if(idEmpresa <= 0) {
+        return response.status(400).send({
+            message: "Empresa no existe"
+        });
+    }
+
+    if(cargaImagenes <= 0) {
+        return response.status(400).send({
+            message: "Ingrese un valor"
+        });
+    }    
+
+    data_access
+        .InsertaParametro(idEmpresa, cargaImagenes)
+        .then(result => {
+            // console.log(result);
+            if(result) {
+                response.status(200).json({
+                    message: "Datos ingresados correctamente"
+                });
+            } else {
+                response.status(404).send({
+                    message: "Se produjo un error al insertar datos"
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });
+        });
+}
+
+const getParametro = (request, response) => {
+    const idEmpresa = parseInt(request.params.empresa)    
+
+    if(idEmpresa <= 0) {
+        return response.status(400).send({
+            message: "Empresa no existe"
+        });
+    }
+
+    data_access
+        .ConsultaParametro(idEmpresa)        
+        .then(result => {
+            // console.log(result.rows.length);
+            if(result.rows.length > 0) {
+                response.status(200).json(result.rows);
+            } else {
+                response.status(404).send({
+                    message: "Datos no encontrados"
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });            
+        });
+}
+
+const getProyectos = (request, response) => {
+    const idEmpresa = parseInt(request.params.empresa)    
+
+    if(idEmpresa <= 0) {
+        return response.status(400).send({
+            message: "Empresa no existe"
+        });
+    }
+
+    data_access
+        .ConsultaProyecto(idEmpresa)        
+        .then(result => {
+            console.log(result.rows.length);
+            if(result.rows.length > 0) {
+                response.status(200).json(result.rows);
+            } else {
+                response.status(404).send({
+                    message: "Datos no encontrados"
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });            
+        });
+}
+
+const getEtapasProyecto = (request, response) => {
+    const idEmpresa = parseInt(request.params.empresa)    
+    const idProyecto = parseInt(request.params.proyecto)    
+
+    if(idEmpresa <= 0) {
+        return response.status(400).send({
+            message: "Empresa no existe"
+        });
+    }
+
+    if(idProyecto <= 0) {
+        return response.status(400).send({
+            message: "Proyecto no existe"
+        });
+    }
+
+    data_access
+        .ConsultaEtapaProyecto(idEmpresa, idProyecto)        
+        .then(result => {
+            console.log(result.rows.length);
+            if(result.rows.length > 0) {
+                response.status(200).json(result.rows);
+            } else {
+                response.status(404).send({
+                    message: "Datos no encontrados"
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });            
+        });
+}
+
 module.exports = {
     setIniciarSesion,
     getRoles,
@@ -671,5 +896,11 @@ module.exports = {
     setEstadoRevision,
     delEstadoRevision,
     getEstadoRevision,
-    getEstadoRevisionPorId
+    getEstadoRevisionPorId,
+    setNivelCargaAleatoria,
+    getNivelCargaAleatoria,
+    setParametro,
+    getParametro,
+    getProyectos,
+    getEtapasProyecto
 }

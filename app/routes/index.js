@@ -29,8 +29,14 @@ router.post('/etapaconstructivaporcapitulo', controllers.setEtapaConstructivaPor
 router.get('/etapaconstructivaporcapitulo/:empresa/:capitulo', controllers.getEtapaConstructivaPorCapitulo);
 router.post('/estadorevision', controllers.setEstadoRevision);
 router.put('/estadorevision/:id', controllers.setEstadoRevision);
-router.delete('/estadorevision/:empresa/:id', controllers.delEstadoRevision);
 router.get('/estadorevision/:empresa', controllers.getEstadoRevision);
 router.get('/estadorevision/:empresa/:id', controllers.getEstadoRevisionPorId);
+router.delete('/estadorevision/:empresa/:id', controllers.delEstadoRevision);
+router.post('/nivelcargaaleatoria', controllers.setNivelCargaAleatoria);
+router.get('/nivelcargaaleatoria/:empresa', controllers.getNivelCargaAleatoria);
+router.post('/parametro', controllers.setParametro);
+router.get('/parametro/:empresa', controllers.getParametro);
+router.get('/proyecto/:empresa', controllers.getProyectos);
+router.get('/etapaproyecto/:empresa/:proyecto', controllers.getEtapasProyecto);
 
 module.exports = router;

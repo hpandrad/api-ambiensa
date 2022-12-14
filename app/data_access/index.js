@@ -71,9 +71,11 @@ async function InsertaPorcentajePorCapitulo(idEmpresa, idCapitulo, arrPorcentaje
     try {
         await fiscalizacion_db.query(deleteQuery, [idEmpresa, idCapitulo]);
 
-        arrPorcentajes.forEach(async (idPorcentaje, index) => {
-            await fiscalizacion_db.query(insertQuery, [idEmpresa, idCapitulo, idPorcentaje]);    
-        });
+        if(arrPorcentajes != null && arrPorcentajes.length > 0) {
+            arrPorcentajes.forEach(async (idPorcentaje, index) => {
+                await fiscalizacion_db.query(insertQuery, [idEmpresa, idCapitulo, idPorcentaje]);    
+            });
+        }        
         
         result = true;
     } catch(error) {
@@ -85,7 +87,7 @@ async function InsertaPorcentajePorCapitulo(idEmpresa, idCapitulo, arrPorcentaje
 
 async function ConsultaPorcentajesPorCapitulo(idEmpresa, idCapitulo){
     let query = '';
-    query += 'SELECT id_empresa, id_capitulo, id_porcentaje ';
+    query += 'SELECT id_empresa, id_capitulo, id_porcentaje, false "check" ';
     query += 'FROM Configuracion_PorcentajePorCapitulo ';    
     query += 'WHERE id_empresa = $1 ';
     query += 'AND id_capitulo = $2';
@@ -236,6 +238,93 @@ async function ConsultaEstadoRevisionPorId(idEmpresa, idEstadoRevision){
     return result;
 }
 
+async function InsertaNivelCargaAleatoria(idEmpresa, arrNivelesCarga){
+    let deleteQuery = 'DELETE FROM Configuracion_NivelCargaAleatoria WHERE id_empresa = $1';    
+    let insertQuery = 'INSERT INTO Configuracion_NivelCargaAleatoria(id_empresa, id_rol, porcentaje, id_estadoRevision) VALUES($1, $2, $3, $4)';
+    let result = false;    
+
+    try {
+        await fiscalizacion_db.query(deleteQuery, [idEmpresa]);
+
+        arrNivelesCarga.forEach(async (element, index) => {
+            const idRol = parseInt(element.rol);
+            const porcentaje = parseFloat(element.porcentaje);
+            const idEstadoRevision = parseInt(element.estadorevision);        
+            await fiscalizacion_db.query(insertQuery, [idEmpresa, idRol, porcentaje, idEstadoRevision]);    
+        });
+        
+        result = true;
+    } catch(error) {
+        console.error(error.stack);        
+    }
+
+    return result;
+}
+
+async function ConsultaNivelCargaAleatoria(idEmpresa){
+    let query = '';
+    query += 'SELECT * ';
+    query += 'FROM Configuracion_NivelCargaAleatoria ';    
+    query += 'WHERE id_empresa = $1 ';    
+    
+    let result = await fiscalizacion_db.query(query, [idEmpresa]);
+
+    return result;
+}
+
+async function InsertaParametro(idEmpresa, cargaImagenes){
+    let deleteQuery = 'DELETE FROM Configuracion_Parametro WHERE id_empresa = $1';    
+    let insertQuery = 'INSERT INTO Configuracion_Parametro(id_empresa, cargaImagenes) VALUES($1, $2)';
+    let result = false;    
+
+    try {
+        await fiscalizacion_db.query(deleteQuery, [idEmpresa]);
+        await fiscalizacion_db.query(insertQuery, [idEmpresa, cargaImagenes]);
+        
+        result = true;
+    } catch(error) {
+        console.error(error.stack);        
+    }
+
+    return result;
+}
+
+async function ConsultaParametro(idEmpresa){
+    let query = '';
+    query += 'SELECT * ';
+    query += 'FROM Configuracion_Parametro ';    
+    query += 'WHERE id_empresa = $1 ';    
+    
+    let result = await fiscalizacion_db.query(query, [idEmpresa]);
+
+    return result;
+}
+
+async function ConsultaProyecto(idEmpresa){
+    let query = '';
+    query += 'SELECT id, descripcion ';
+    query += 'FROM Proyecto ';    
+    query += 'WHERE id_empresa = $1 ';
+    query += 'ORDER BY descripcion';
+    
+    let result = await ambiensa_db.query(query, [idEmpresa]);
+
+    return result;
+}
+
+async function ConsultaEtapaProyecto(idEmpresa, idProyecto){
+    let query = '';
+    query += 'SELECT id, descripcion ';
+    query += 'FROM EtapaProyecto ';    
+    query += 'WHERE id_empresa = $1 ';
+    query += 'AND id_proyecto = $2 ';
+    query += 'ORDER BY descripcion';
+    
+    let result = await ambiensa_db.query(query, [idEmpresa, idProyecto]);
+
+    return result;
+}
+
 module.exports = {    
     ValidaUsuario,
     ConsultaRoles,
@@ -255,4 +344,10 @@ module.exports = {
     EliminaEstadoRevision,
     ConsultaEstadoRevision,
     ConsultaEstadoRevisionPorId,
+    InsertaNivelCargaAleatoria,
+    ConsultaNivelCargaAleatoria,
+    InsertaParametro,
+    ConsultaParametro,
+    ConsultaProyecto,
+    ConsultaEtapaProyecto
 }
