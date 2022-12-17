@@ -251,17 +251,19 @@ async function ConsultaEstadoRevisionPorDescripcion(idEmpresa, descripcion){
 }
 
 async function InsertaNivelCargaAleatoria(idEmpresa, arrNivelesCarga){
-    let deleteQuery = 'DELETE FROM Configuracion_NivelCargaAleatoria WHERE id_empresa = $1';    
+    let deleteQuery = 'DELETE FROM Configuracion_NivelCargaAleatoria WHERE id_empresa = $1 AND id_rol = $2';    
     let insertQuery = 'INSERT INTO Configuracion_NivelCargaAleatoria(id_empresa, id_rol, porcentaje, id_estadoRevision) VALUES($1, $2, $3, $4)';
     let result = false;    
 
     try {
-        await fiscalizacion_db.query(deleteQuery, [idEmpresa]);
+        // await fiscalizacion_db.query(deleteQuery, [idEmpresa]);
 
         arrNivelesCarga.forEach(async (element, index) => {
             const idRol = parseInt(element.rol);
             const porcentaje = parseFloat(element.porcentaje);
             const idEstadoRevision = parseInt(element.estadorevision);        
+            
+            await fiscalizacion_db.query(deleteQuery, [idEmpresa, idRol]);
             await fiscalizacion_db.query(insertQuery, [idEmpresa, idRol, porcentaje, idEstadoRevision]);    
         });
         
