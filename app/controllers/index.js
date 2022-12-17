@@ -529,24 +529,40 @@ const setEstadoRevision = (request, response) => {
             });
     } else {
         data_access
-            .InsertaEstadoRevision(idEmpresa, strDescripcion)
-            .then(result => {
-                // console.log(result);
+            .ConsultaEstadoRevisionPorDescripcion(idEmpresa, strDescripcion)        
+            .then(result => {            
                 if(result.rows.length > 0) {
-                    response.status(200).json({
-                        id: result.rows[0].id
+                    response.status(406).send({
+                        message: "Registro ya existe"
                     });
                 } else {
-                    response.status(404).send({
-                        message: "Se produjo un error al insertar datos"
-                    });
+                    data_access
+                        .InsertaEstadoRevision(idEmpresa, strDescripcion)
+                        .then(result => {
+                            // console.log(result);
+                            if(result.rows.length > 0) {
+                                response.status(200).json({
+                                    id: result.rows[0].id
+                                });
+                            } else {
+                                response.status(404).send({
+                                    message: "Se produjo un error al insertar datos"
+                                });
+                            }
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            return response.status(500).send({
+                                message: "INTERNAL SERVER ERROR",
+                            });
+                        });
                 }
             })
             .catch(err => {
                 console.log(err);
                 return response.status(500).send({
-                    message: "INTERNAL SERVER ERROR",
-                });
+                    message: "INTERNAL SERVER ERROR"
+                });            
             });
     }
 }

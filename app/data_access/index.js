@@ -238,6 +238,18 @@ async function ConsultaEstadoRevisionPorId(idEmpresa, idEstadoRevision){
     return result;
 }
 
+async function ConsultaEstadoRevisionPorDescripcion(idEmpresa, descripcion){
+    let query = '';
+    query += 'SELECT id_empresa, id, descripcion ';
+    query += 'FROM Configuracion_EstadoRevision ';    
+    query += 'WHERE id_empresa = $1 ';
+    query += 'AND UPPER(descripcion) = UPPER($2)';
+    
+    let result = await fiscalizacion_db.query(query, [idEmpresa, descripcion]);
+
+    return result;
+}
+
 async function InsertaNivelCargaAleatoria(idEmpresa, arrNivelesCarga){
     let deleteQuery = 'DELETE FROM Configuracion_NivelCargaAleatoria WHERE id_empresa = $1';    
     let insertQuery = 'INSERT INTO Configuracion_NivelCargaAleatoria(id_empresa, id_rol, porcentaje, id_estadoRevision) VALUES($1, $2, $3, $4)';
@@ -344,6 +356,7 @@ module.exports = {
     EliminaEstadoRevision,
     ConsultaEstadoRevision,
     ConsultaEstadoRevisionPorId,
+    ConsultaEstadoRevisionPorDescripcion,
     InsertaNivelCargaAleatoria,
     ConsultaNivelCargaAleatoria,
     InsertaParametro,
