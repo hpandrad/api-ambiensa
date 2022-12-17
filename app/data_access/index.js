@@ -41,7 +41,7 @@ async function ConsultaRol(idEmpresa, idRol){
 
 async function ConsultaPorcentajes(idEmpresa){
     let query = '';
-    query += 'SELECT id, descripcion, porcentaje ';
+    query += 'SELECT id, descripcion, porcentaje, false "check" ';
     query += 'FROM Porcentaje ';    
     query += 'WHERE id_empresa = $1 ';
     query += 'ORDER BY porcentaje';
@@ -87,7 +87,7 @@ async function InsertaPorcentajePorCapitulo(idEmpresa, idCapitulo, arrPorcentaje
 
 async function ConsultaPorcentajesPorCapitulo(idEmpresa, idCapitulo){
     let query = '';
-    query += 'SELECT id_empresa, id_capitulo, id_porcentaje, false "check" ';
+    query += 'SELECT id_empresa, id_capitulo, id_porcentaje ';
     query += 'FROM Configuracion_PorcentajePorCapitulo ';    
     query += 'WHERE id_empresa = $1 ';
     query += 'AND id_capitulo = $2';
