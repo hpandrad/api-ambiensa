@@ -39,6 +39,8 @@ CREATE TABLE Configuracion_EstadoRevision(
 	CONSTRAINT PK_Configuracion_EstadoRevision PRIMARY KEY(id)
 );
 
+--GRANT USAGE, SELECT ON SEQUENCE configuracion_estadorevision_id_seq TO devsswma_fiscalizacion;
+
 CREATE TABLE Configuracion_NivelCargaAleatoria(
 	id_empresa INTEGER,	
 	id_rol INTEGER,
