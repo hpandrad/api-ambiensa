@@ -339,6 +339,42 @@ async function ConsultaEtapaProyecto(idEmpresa, idProyecto){
     return result;
 }
 
+async function InsertaPeriodoFiscalizacion(idEmpresa, arrPeriodosFiscalizacion){
+    let deleteQuery = 'DELETE FROM Configuracion_PeriodoFiscalizacion WHERE id_empresa = $1 AND id_proyecto = $2';    
+    let insertQuery = 'INSERT INTO Configuracion_PeriodoFiscalizacion(id_empresa, id_proyecto, id_etapaProyecto, periodo) VALUES($1, $2, $3, $4)';
+    let result = false;    
+
+    try {
+        // await fiscalizacion_db.query(deleteQuery, [idEmpresa]);
+
+        arrPeriodosFiscalizacion.forEach(async (element, index) => {
+            const idProyecto = parseInt(element.proyecto);
+            const idEtapa = parseInt(element.etapa);
+            const periodo = parseFloat(element.periodo);
+            
+            await fiscalizacion_db.query(deleteQuery, [idEmpresa, idProyecto]);
+            await fiscalizacion_db.query(insertQuery, [idEmpresa, idProyecto, idEtapa, periodo]);    
+        });
+        
+        result = true;
+    } catch(error) {
+        console.error(error.stack);        
+    }
+
+    return result;
+}
+
+async function ConsultaPeriodoFiscalizacion(idEmpresa){
+    let query = '';
+    query += 'SELECT * ';
+    query += 'FROM Configuracion_PeriodoFiscalizacion ';    
+    query += 'WHERE id_empresa = $1 ';    
+    
+    let result = await fiscalizacion_db.query(query, [idEmpresa]);
+
+    return result;
+}
+
 module.exports = {    
     ValidaUsuario,
     ConsultaRoles,
@@ -364,5 +400,7 @@ module.exports = {
     InsertaParametro,
     ConsultaParametro,
     ConsultaProyecto,
-    ConsultaEtapaProyecto
+    ConsultaEtapaProyecto,
+    InsertaPeriodoFiscalizacion,
+    ConsultaPeriodoFiscalizacion
 }

@@ -895,6 +895,98 @@ const getEtapasProyecto = (request, response) => {
         });
 }
 
+const setPeriodoFiscalizacion = (request, response) => {
+    const { empresa, periodosFiscalizacion } = request.body
+    const idEmpresa = parseInt(empresa);    
+    const arrPeriodosFiscalizacion = periodosFiscalizacion;        
+
+    if(idEmpresa <= 0) {
+        return response.status(400).send({
+            message: "Empresa no existe"
+        });
+    }
+
+    if(arrPeriodosFiscalizacion == null || arrPeriodosFiscalizacion.length == 0) {
+        return response.status(400).send({
+            message: "Debe enviar al menos 1 periodo de fiscalización"
+        });
+    }
+
+    arrPeriodosFiscalizacion.forEach((element, index) => {
+        const idProyecto = parseInt(element.proyecto);
+        const idEtapa = parseInt(element.etapa);
+        const periodo = parseFloat(element.periodo);
+        
+        if(idProyecto <= 0) {
+            return response.status(400).send({
+                message: "Proyecto no existe"
+            });
+        }
+
+        if(idEtapa <= 0) {
+            return response.status(400).send({
+                message: "Etapa de revisión no existe"
+            });
+        }
+
+        if(periodo <= 0) {
+            return response.status(400).send({
+                message: "Ingrese un número de dias como periodo"
+            });
+        }
+    });    
+
+    data_access
+        .InsertaPeriodoFiscalizacion(idEmpresa, arrPeriodosFiscalizacion)
+        .then(result => {
+            // console.log(result);
+            if(result) {
+                response.status(200).json({
+                    message: "Datos ingresados correctamente"
+                });
+            } else {
+                response.status(404).send({
+                    message: "Se produjo un error al insertar datos"
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });
+        });
+}
+
+const getPeriodoFiscalizacion = (request, response) => {
+    const idEmpresa = parseInt(request.params.empresa)    
+
+    if(idEmpresa <= 0) {
+        return response.status(400).send({
+            message: "Empresa no existe"
+        });
+    }
+
+    data_access
+        .ConsultaPeriodoFiscalizacion(idEmpresa)        
+        .then(result => {
+            // console.log(result.rows.length);
+            if(result.rows.length > 0) {
+                response.status(200).json(result.rows);
+            } else {
+                response.status(404).send({
+                    message: "Datos no encontrados"
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });            
+        });
+}
+
 module.exports = {
     setIniciarSesion,
     getRoles,
@@ -918,5 +1010,7 @@ module.exports = {
     setParametro,
     getParametro,
     getProyectos,
-    getEtapasProyecto
+    getEtapasProyecto,
+    setPeriodoFiscalizacion,
+    getPeriodoFiscalizacion
 }
