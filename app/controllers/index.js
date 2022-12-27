@@ -1031,6 +1031,7 @@ const getOrdenesTrabajo = (request, response) => {
         fechaemision: 1,
         tiempoejecucion: 1,
         detalles: {
+            id_detalle: 1,
             manzana: 1,
             solar: 1,
             modelo: 1,
@@ -1067,9 +1068,10 @@ const getOrdenesTrabajo = (request, response) => {
         })
         .catch(err => {
             console.log(err);
-            return response.status(500).send({
-                message: "INTERNAL SERVER ERROR"
-            });            
+            // return response.status(500).send({
+            //     message: "INTERNAL SERVER ERROR"
+            // });
+            return response.status(500).send(err);
         });
 }
 

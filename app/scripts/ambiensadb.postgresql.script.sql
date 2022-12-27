@@ -179,10 +179,8 @@ INSERT INTO EtapaProyecto(id_empresa,id_proyecto,id,descripcion) VALUES(1,2,3,'E
 INSERT INTO Urbanizacion(id_empresa,id,descripcion) VALUES(1,1,'GERANIO 3');
 INSERT INTO Urbanizacion(id_empresa,id,descripcion) VALUES(1,2,'ETAPA 3');
 
-INSERT INTO OrdenTrabajo(id_empresa,id,codigo,id_proyecto,id_urbanizacion,id_etapaProyecto,fechaEmision,tiempoEjecucion,periodoEvaluacion,usuario)
-VALUES(1,1,'VGEGERANIO 3-OT017',1,1,1,'2022-11-16',8,'SEMANAS','jabad');
-INSERT INTO OrdenTrabajo(id_empresa,id,codigo,id_proyecto,id_urbanizacion,id_etapaProyecto,fechaEmision,tiempoEjecucion,periodoEvaluacion,usuario)
-VALUES(1,2,'PSEETAPA 3-OT030',2,2,1,'2022-12-14',8,'SEMANAS','jabad');
+INSERT INTO OrdenTrabajo(id_empresa,id,codigo,id_proyecto,id_urbanizacion,id_etapaProyecto,fechaEmision,tiempoEjecucion,periodoEvaluacion,usuario) VALUES(1,1,'VGEGERANIO 3-OT017',1,1,1,'2022-11-16',8,'SEMANAS','jabad');
+INSERT INTO OrdenTrabajo(id_empresa,id,codigo,id_proyecto,id_urbanizacion,id_etapaProyecto,fechaEmision,tiempoEjecucion,periodoEvaluacion,usuario) VALUES(1,2,'PSEETAPA 3-OT030',2,2,1,'2022-12-14',8,'SEMANAS','jabad');
 
 INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(1,1,7581,40,'GERANIO STD','','N.A.','OT-ACABADOS');
 INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(1,2,7582,26,'GERANIO STD','','N.A.','OT-ACABADOS');
