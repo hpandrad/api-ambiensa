@@ -40,5 +40,7 @@ router.get('/proyecto/:empresa', controllers.getProyectos);
 router.get('/etapaproyecto/:empresa/:proyecto', controllers.getEtapasProyecto);
 router.post('/periodoFiscalizacion', controllers.setPeriodoFiscalizacion);
 router.get('/periodoFiscalizacion/:empresa', controllers.getPeriodoFiscalizacion);
+router.get('/urbanizacion/:empresa', controllers.getUrbanizaciones);
+router.get('/ordenestrabajo/:empresa/:usuario', controllers.getOrdenesTrabajo);
 
 module.exports = router;

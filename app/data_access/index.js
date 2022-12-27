@@ -375,6 +375,38 @@ async function ConsultaPeriodoFiscalizacion(idEmpresa){
     return result;
 }
 
+async function ConsultaUrbanizacion(idEmpresa){
+    let query = '';
+    query += 'SELECT id, descripcion ';
+    query += 'FROM Urbanizacion ';    
+    query += 'WHERE id_empresa = $1 ';
+    query += 'ORDER BY descripcion';
+    
+    let result = await ambiensa_db.query(query, [idEmpresa]);
+
+    return result;
+}
+
+async function ConsultaOrdenTrabajo(idEmpresa,usuario){
+    let query = '';
+    query += 'SELECT ot.id,ot.codigo,p.id as idProyecto,p.descripcion as proyecto,u.id as idUrbanizacion,';
+    query += 'u.descripcion as urbanizacion,ep.descripcion as etapa,ot.fechaEmision as fechaEmision,';
+    query += 'CONCAT(ot.tiempoEjecucion,\' \',ot.periodoEvaluacion) as tiempoEjecucion,dot.manzana,';
+    query += 'dot.solar,dot.modelo,dot.descripcion,dot.fechaEspecificacionTecnica,dot.tipoOrdenTrabajo ';
+    query += 'FROM OrdenTrabajo ot ';    
+    query += 'INNER JOIN Proyecto p ON p.id = ot.id_proyecto ';
+    query += 'INNER JOIN Urbanizacion u ON u.id = ot.id_urbanizacion ';
+    query += 'INNER JOIN EtapaProyecto ep ON ep.id_proyecto = ot.id_proyecto AND ep.id = ot.id_etapaProyecto ';
+    query += 'INNER JOIN DetalleOrdenTrabajo dot ON dot.id_ordenTrabajo = ot.id ';
+    query += 'WHERE ot.id_empresa = $1 ';
+    query += 'AND usuario = $2 ';
+    query += 'ORDER BY ot.fechaEmision,dot.id';
+    
+    let result = await ambiensa_db.query(query, [idEmpresa,usuario]);
+
+    return result;
+}
+
 module.exports = {    
     ValidaUsuario,
     ConsultaRoles,
@@ -402,5 +434,7 @@ module.exports = {
     ConsultaProyecto,
     ConsultaEtapaProyecto,
     InsertaPeriodoFiscalizacion,
-    ConsultaPeriodoFiscalizacion
+    ConsultaPeriodoFiscalizacion,
+    ConsultaUrbanizacion,
+    ConsultaOrdenTrabajo
 }

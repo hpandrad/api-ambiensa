@@ -77,14 +77,53 @@ CREATE TABLE Proyecto(
 	CONSTRAINT PK_Proyecto PRIMARY KEY(id)
 );
 
+DROP TABLE EtapaProyecto;
 CREATE TABLE EtapaProyecto(
 	id_empresa INTEGER,
 	id_proyecto INTEGER,
 	id INTEGER,
 	descripcion VARCHAR(100),	
 	
-	CONSTRAINT PK_EtapaProyecto PRIMARY KEY(id),
+	CONSTRAINT PK_EtapaProyecto PRIMARY KEY(id_proyecto,id),
 	CONSTRAINT FK_EtapaProyecto_Proyecto FOREIGN KEY(id_proyecto) REFERENCES Proyecto(id)
+);
+
+CREATE TABLE Urbanizacion(
+	id_empresa INTEGER,
+	id INTEGER,
+	descripcion VARCHAR(100),	
+	
+	CONSTRAINT PK_Urbanizacion PRIMARY KEY(id)
+);
+
+DROP TABLE OrdenTrabajo;
+CREATE TABLE OrdenTrabajo(
+	id_empresa INTEGER,
+	id INTEGER,
+	codigo VARCHAR(20),
+	id_proyecto INTEGER,
+	id_urbanizacion INTEGER,
+	id_etapaProyecto INTEGER,
+	fechaEmision DATE,
+	tiempoEjecucion INTEGER,
+	periodoEvaluacion VARCHAR(10),
+	usuario VARCHAR(50),
+	
+	CONSTRAINT PK_OrdenTrabajo PRIMARY KEY(codigo)
+);
+
+DROP TABLE DetalleOrdenTrabajo;
+CREATE TABLE DetalleOrdenTrabajo(
+	id_ordenTrabajo INTEGER,
+	id INTEGER,
+	manzana INTEGER,
+	solar INTEGER,
+	modelo VARCHAR(100),
+	descripcion VARCHAR(2000),
+	fechaEspecificacionTecnica VARCHAR(10),
+	tipoOrdenTrabajo VARCHAR(50),
+
+	CONSTRAINT PK_DetalleOrdenTrabajo PRIMARY KEY(id_ordenTrabajo,id)
 );
 
 INSERT INTO Empresa(id,nombre) VALUES(1,'Ambiensa S.A.');
@@ -96,6 +135,7 @@ INSERT INTO Rol(id_empresa,id,descripcion) VALUES(1,4,'Jefe de Fiscalización');
 INSERT INTO Rol(id_empresa,id,descripcion) VALUES(1,5,'Gerente');
 
 INSERT INTO Usuario(id_empresa,id,usuario,clave,nombre,id_rol) VALUES(1,1,'handrade','prueba123','Hernán Andrade',1);
+INSERT INTO Usuario(id_empresa,id,usuario,clave,nombre,id_rol) VALUES(1,2,'jabad','prueba123','Julio Abad',2);
 
 INSERT INTO Porcentaje(id_empresa,id,descripcion,porcentaje) VALUES(1,1,'0%',0.00);
 INSERT INTO Porcentaje(id_empresa,id,descripcion,porcentaje) VALUES(1,2,'25%',0.25);
@@ -124,11 +164,37 @@ INSERT INTO Modelo(id_empresa,id,descripcion) VALUES(1,1,'KIARA');
 INSERT INTO EtapaConstructiva(id_empresa,id,descripcion) VALUES(1,1,'NADA');
 INSERT INTO EtapaConstructiva(id_empresa,id,descripcion) VALUES(1,2,'FINALIZADO');
 
-INSERT INTO Proyecto(id_empresa,id,descripcion) VALUES(1,1,'PROYECTO A');
+DELETE FROM Proyecto;
+INSERT INTO Proyecto(id_empresa,id,descripcion) VALUES(1,1,'VILLA GERANIO');
+INSERT INTO Proyecto(id_empresa,id,descripcion) VALUES(1,2,'PS');
 
+DELETE FROM EtapaProyecto;
 INSERT INTO EtapaProyecto(id_empresa,id_proyecto,id,descripcion) VALUES(1,1,1,'ETAPA 1');
 INSERT INTO EtapaProyecto(id_empresa,id_proyecto,id,descripcion) VALUES(1,1,2,'ETAPA 2');
 INSERT INTO EtapaProyecto(id_empresa,id_proyecto,id,descripcion) VALUES(1,1,3,'ETAPA 3');
+INSERT INTO EtapaProyecto(id_empresa,id_proyecto,id,descripcion) VALUES(1,2,1,'ETAPA 1');
+INSERT INTO EtapaProyecto(id_empresa,id_proyecto,id,descripcion) VALUES(1,2,2,'ETAPA 2');
+INSERT INTO EtapaProyecto(id_empresa,id_proyecto,id,descripcion) VALUES(1,2,3,'ETAPA 3');
+
+INSERT INTO Urbanizacion(id_empresa,id,descripcion) VALUES(1,1,'GERANIO 3');
+INSERT INTO Urbanizacion(id_empresa,id,descripcion) VALUES(1,2,'ETAPA 3');
+
+INSERT INTO OrdenTrabajo(id_empresa,id,codigo,id_proyecto,id_urbanizacion,id_etapaProyecto,fechaEmision,tiempoEjecucion,periodoEvaluacion,usuario)
+VALUES(1,1,'VGEGERANIO 3-OT017',1,1,1,'2022-11-16',8,'SEMANAS','jabad');
+INSERT INTO OrdenTrabajo(id_empresa,id,codigo,id_proyecto,id_urbanizacion,id_etapaProyecto,fechaEmision,tiempoEjecucion,periodoEvaluacion,usuario)
+VALUES(1,2,'PSEETAPA 3-OT030',2,2,1,'2022-12-14',8,'SEMANAS','jabad');
+
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(1,1,7581,40,'GERANIO STD','','N.A.','OT-ACABADOS');
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(1,2,7582,26,'GERANIO STD','','N.A.','OT-ACABADOS');
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(1,3,7582,30,'GERANIO STD','','N.A.','OT-ACABADOS');
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(1,4,7582,32,'GERANIO STD','','N.A.','OT-ACABADOS');
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(2,1,7705,24,'ARYANA CON BASE','','N.A.','OT-ACABADOS');
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(2,2,7707,7,'KIARA','','2021-05-05','OT-ACABADOS');
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(2,3,7707,10,'KIARA','','N.A.','OT-ACABADOS');
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(2,4,7707,25,'KIARA','','2021-05-05','OT-ACABADOS');
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(2,5,7707,26,'KIARA','','2021-05-05','OT-ACABADOS');
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(2,6,7709,9,'KIARA','','N.A.','OT-ACABADOS');
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(2,7,7710,30,'KIARA','','N.A.','OT-ACABADOS');
 
 SELECT * 
 FROM Usuario u

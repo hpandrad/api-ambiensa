@@ -1,4 +1,5 @@
 const data_access = require('../data_access/index');
+const sqlJoinToJson = require('sql-join-to-json');
 
 const setIniciarSesion = (request, response) => {
     const { user, pass } = request.body
@@ -47,7 +48,7 @@ const getRoles = (request, response) => {
     data_access
         .ConsultaRoles(idEmpresa)        
         .then(result => {
-            console.log(result.rows.length);
+            // console.log(result.rows.length);
             if(result.rows.length > 0) {
                 response.status(200).json(result.rows);
             } else {
@@ -653,7 +654,7 @@ const getEstadoRevisionPorId = (request, response) => {
     data_access
         .ConsultaEstadoRevisionPorId(idEmpresa, idEstadoRevision)        
         .then(result => {
-            console.log(result.rows.length);
+            // console.log(result.rows.length);
             if(result.rows.length > 0) {
                 response.status(200).json(result.rows);
             } else {
@@ -842,7 +843,7 @@ const getProyectos = (request, response) => {
     data_access
         .ConsultaProyecto(idEmpresa)        
         .then(result => {
-            console.log(result.rows.length);
+            // console.log(result.rows.length);
             if(result.rows.length > 0) {
                 response.status(200).json(result.rows);
             } else {
@@ -878,7 +879,7 @@ const getEtapasProyecto = (request, response) => {
     data_access
         .ConsultaEtapaProyecto(idEmpresa, idProyecto)        
         .then(result => {
-            console.log(result.rows.length);
+            // console.log(result.rows.length);
             if(result.rows.length > 0) {
                 response.status(200).json(result.rows);
             } else {
@@ -987,6 +988,91 @@ const getPeriodoFiscalizacion = (request, response) => {
         });
 }
 
+const getUrbanizaciones = (request, response) => {
+    const idEmpresa = parseInt(request.params.empresa)    
+
+    if(idEmpresa <= 0) {
+        return response.status(400).send({
+            message: "Empresa no existe"
+        });
+    }
+
+    data_access
+        .ConsultaUrbanizacion(idEmpresa)        
+        .then(result => {
+            // console.log(result.rows.length);
+            if(result.rows.length > 0) {
+                response.status(200).json(result.rows);
+            } else {
+                response.status(404).send({
+                    message: "Datos no encontrados"
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });            
+        });
+}
+
+const getOrdenesTrabajo = (request, response) => {
+    const idEmpresa = parseInt(request.params.empresa);
+    const usuario = request.params.usuario;
+    const resultStructure = {
+        id: 1,
+        codigo: 1,
+        idproyecto: 1,
+        proyecto: 1,
+        idurbanizacion: 1,
+        urbanizacion: 1,
+        etapa: 1,
+        fechaemision: 1,
+        tiempoejecucion: 1,
+        detalles: {
+            manzana: 1,
+            solar: 1,
+            modelo: 1,
+            descripcion: 1,
+            fechaespecificaciontecnica: 1,
+            tipoordentrabajo: 1,
+        }
+    };
+
+    if(idEmpresa <= 0) {
+        return response.status(400).send({
+            message: "Empresa no existe"
+        });
+    }
+
+    if(!usuario || usuario.trim() == '') {
+        return response.status(400).send({
+            message: "Usuario no existe"
+        });
+    }
+
+    data_access
+        .ConsultaOrdenTrabajo(idEmpresa,usuario)
+        .then(result => {
+            // console.log(result.rows.length);
+            if(result.rows.length > 0) {
+                const json_result = sqlJoinToJson(resultStructure, result.rows)
+                response.status(200).json(json_result);
+            } else {
+                response.status(404).send({
+                    message: "Datos no encontrados"
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });            
+        });
+}
+
 module.exports = {
     setIniciarSesion,
     getRoles,
@@ -1012,5 +1098,7 @@ module.exports = {
     getProyectos,
     getEtapasProyecto,
     setPeriodoFiscalizacion,
-    getPeriodoFiscalizacion
+    getPeriodoFiscalizacion,
+    getUrbanizaciones,
+    getOrdenesTrabajo
 }
