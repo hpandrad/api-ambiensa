@@ -1034,6 +1034,7 @@ const getOrdenesTrabajo = (request, response) => {
             id_detalle: 1,
             manzana: 1,
             solar: 1,
+            id_modelo: 1,
             modelo: 1,
             descripcion: 1,
             fechaespecificaciontecnica: 1,

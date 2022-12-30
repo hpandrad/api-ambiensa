@@ -392,7 +392,7 @@ async function ConsultaOrdenTrabajo(idEmpresa,usuario){
     query += 'SELECT ot.id,ot.codigo,p.id as idProyecto,p.descripcion as proyecto,u.id as idUrbanizacion,';
     query += 'u.descripcion as urbanizacion,ep.descripcion as etapa,ot.fechaEmision as fechaEmision,';
     query += 'ot.tiempoEjecucion || \' \' || ot.periodoEvaluacion as tiempoEjecucion,dot.id as id_detalle,';
-    query += 'dot.manzana,dot.solar,dot.modelo,dot.descripcion,dot.fechaEspecificacionTecnica,dot.tipoOrdenTrabajo ';
+    query += 'dot.manzana,dot.solar,dot.id_modelo,dot.modelo,dot.descripcion,dot.fechaEspecificacionTecnica,dot.tipoOrdenTrabajo ';
     query += 'FROM OrdenTrabajo ot ';    
     query += 'INNER JOIN Proyecto p ON p.id = ot.id_proyecto ';
     query += 'INNER JOIN Urbanizacion u ON u.id = ot.id_urbanizacion ';
