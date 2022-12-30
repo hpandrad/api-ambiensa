@@ -118,6 +118,7 @@ CREATE TABLE DetalleOrdenTrabajo(
 	id INTEGER,
 	manzana INTEGER,
 	solar INTEGER,
+	id_modelo INTEGER,
 	modelo VARCHAR(100),
 	descripcion VARCHAR(2000),
 	fechaEspecificacionTecnica VARCHAR(10),
@@ -160,6 +161,8 @@ INSERT INTO Capitulo(id_empresa,id,descripcion,orden) VALUES(1,14,'PISO DE INGRE
 INSERT INTO Capitulo(id_empresa,id,descripcion,orden) VALUES(1,15,'VARIOS',15);
 
 INSERT INTO Modelo(id_empresa,id,descripcion) VALUES(1,1,'KIARA');
+INSERT INTO Modelo(id_empresa,id,descripcion) VALUES(1,2,'GERANIO STD');
+INSERT INTO Modelo(id_empresa,id,descripcion) VALUES(1,3,'ARYANA CON BASE');
 
 INSERT INTO EtapaConstructiva(id_empresa,id,descripcion) VALUES(1,1,'NADA');
 INSERT INTO EtapaConstructiva(id_empresa,id,descripcion) VALUES(1,2,'FINALIZADO');
@@ -182,17 +185,17 @@ INSERT INTO Urbanizacion(id_empresa,id,descripcion) VALUES(1,2,'ETAPA 3');
 INSERT INTO OrdenTrabajo(id_empresa,id,codigo,id_proyecto,id_urbanizacion,id_etapaProyecto,fechaEmision,tiempoEjecucion,periodoEvaluacion,usuario) VALUES(1,1,'VGEGERANIO 3-OT017',1,1,1,'2022-11-16',8,'SEMANAS','jabad');
 INSERT INTO OrdenTrabajo(id_empresa,id,codigo,id_proyecto,id_urbanizacion,id_etapaProyecto,fechaEmision,tiempoEjecucion,periodoEvaluacion,usuario) VALUES(1,2,'PSEETAPA 3-OT030',2,2,1,'2022-12-14',8,'SEMANAS','jabad');
 
-INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(1,1,7581,40,'GERANIO STD','','N.A.','OT-ACABADOS');
-INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(1,2,7582,26,'GERANIO STD','','N.A.','OT-ACABADOS');
-INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(1,3,7582,30,'GERANIO STD','','N.A.','OT-ACABADOS');
-INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(1,4,7582,32,'GERANIO STD','','N.A.','OT-ACABADOS');
-INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(2,1,7705,24,'ARYANA CON BASE','','N.A.','OT-ACABADOS');
-INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(2,2,7707,7,'KIARA','','2021-05-05','OT-ACABADOS');
-INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(2,3,7707,10,'KIARA','','N.A.','OT-ACABADOS');
-INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(2,4,7707,25,'KIARA','','2021-05-05','OT-ACABADOS');
-INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(2,5,7707,26,'KIARA','','2021-05-05','OT-ACABADOS');
-INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(2,6,7709,9,'KIARA','','N.A.','OT-ACABADOS');
-INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(2,7,7710,30,'KIARA','','N.A.','OT-ACABADOS');
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,id_modelo,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(1,1,7581,40,2,'GERANIO STD','','N.A.','OT-ACABADOS');
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,id_modelo,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(1,2,7582,26,2,'GERANIO STD','','N.A.','OT-ACABADOS');
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,id_modelo,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(1,3,7582,30,2,'GERANIO STD','','N.A.','OT-ACABADOS');
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,id_modelo,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(1,4,7582,32,2,'GERANIO STD','','N.A.','OT-ACABADOS');
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,id_modelo,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(2,1,7705,24,3,'ARYANA CON BASE','','N.A.','OT-ACABADOS');
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,id_modelo,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(2,2,7707,7,1,'KIARA','','2021-05-05','OT-ACABADOS');
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,id_modelo,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(2,3,7707,10,1,'KIARA','','N.A.','OT-ACABADOS');
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,id_modelo,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(2,4,7707,25,1,'KIARA','','2021-05-05','OT-ACABADOS');
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,id_modelo,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(2,5,7707,26,1,'KIARA','','2021-05-05','OT-ACABADOS');
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,id_modelo,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(2,6,7709,9,1,'KIARA','','N.A.','OT-ACABADOS');
+INSERT INTO DetalleOrdenTrabajo(id_ordenTrabajo,id,manzana,solar,id_modelo,modelo,descripcion,fechaEspecificacionTecnica,tipoOrdenTrabajo) VALUES(2,7,7710,30,1,'KIARA','','N.A.','OT-ACABADOS');
 
 SELECT * 
 FROM Usuario u
