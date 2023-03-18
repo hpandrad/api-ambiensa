@@ -9,9 +9,9 @@
 
 // PRO
 module.exports = {
-  HOST: "localhost",
-  USER: "devsswma_ambiensa",
-  PASSWORD: "devsswma_Pruebasa1",
-  DB: "devsswma_AmbiensaDB",
-  PORT: "5432"
+  HOST: "200.7.195.155",
+  USER: "postgres",
+  PASSWORD: "postgres*2022",
+  DB: "sgi_ambiensa",
+  PORT: "5433"
 };

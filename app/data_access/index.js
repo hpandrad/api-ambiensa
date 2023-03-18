@@ -4,37 +4,53 @@ const fiscalizacion_db = db.fiscalizacionPool;
 
 async function ValidaUsuario(usuario, clave){
     let query = '';
-    query += 'SELECT e.id "idEmpresa", e.nombre "empresa", u.nombre "nombreUsuario", u.id_rol "idRol" ';
-    query += 'FROM Usuario u ';
-    query += 'INNER JOIN Empresa e ON e.id = u.id_empresa ';
-    query += 'WHERE u.usuario = $1 ';
-    query += 'AND u.clave = $2';
+    query += 'SELECT e.id_empresa "idEmpresa", e.nombre "empresa", u.usuario "usuario", u.nombre "nombreUsuario", u.id_rol "idRol" ';
+    query += 'FROM usuario_empresas ue ';
+    query += 'INNER JOIN empresas e ON ue.id_empresa = e.id_empresa ';
+    query += 'INNER JOIN usuarios u ON ue.id_usuario = u.id_usuario ';
+    query += 'WHERE UPPER(u.usuario) = UPPER($1) ';
+    // query += 'AND u.clave = $2';
+    query += 'GROUP BY e.id_empresa, e.nombre, u.usuario, u.nombre, u.id_rol';
     
-    let result = await ambiensa_db.query(query, [usuario, clave]);
+    // let result = await ambiensa_db.query(query, [usuario, clave]);
+    let result = await ambiensa_db.query(query, [usuario]);
+
+    return result;
+}
+
+async function ConsultaEmpresa(idUsuario){
+    let query = '';
+    query += 'SELECT e.id_empresa, e.nombre ';
+    query += 'FROM usuario_empresas ue ';
+    query += 'INNER JOIN empresas e ON ue.id_empresa = e.id_empresa ';
+    query += 'WHERE id_usuario = $1 ';
+    query += 'GROUP BY e.id_empresa, e.nombre';
+    
+    let result = await ambiensa_db.query(query, [idUsuario]);
 
     return result;
 }
 
 async function ConsultaRoles(idEmpresa){
     let query = '';
-    query += 'SELECT id, descripcion ';
-    query += 'FROM Rol ';    
-    query += 'WHERE id_empresa = $1 ';
-    query += 'ORDER BY id';
+    query += 'SELECT id_rol "id", descripcion ';
+    query += 'FROM roles ';
+    query += 'ORDER BY descripcion';
     
-    let result = await ambiensa_db.query(query, [idEmpresa]);
+    // let result = await ambiensa_db.query(query, [idEmpresa]);
+    let result = await ambiensa_db.query(query);
 
     return result;
 }
 
 async function ConsultaRol(idEmpresa, idRol){
     let query = '';
-    query += 'SELECT id, descripcion ';
-    query += 'FROM Rol ';    
-    query += 'WHERE id_empresa = $1 ';
-    query += 'AND id = $2 ';
+    query += 'SELECT id_rol "id", descripcion ';
+    query += 'FROM roles ';    
+    query += 'WHERE id_rol = $1 ';
 
-    let result = await ambiensa_db.query(query, [idEmpresa, idRol]);
+    // let result = await ambiensa_db.query(query, [idEmpresa, idRol]);
+    let result = await ambiensa_db.query(query, [idRol]);
 
     return result;
 }
@@ -43,20 +59,21 @@ async function ConsultaPorcentajes(idEmpresa){
     let query = '';
     query += 'SELECT id, descripcion, porcentaje, false "check" ';
     query += 'FROM Porcentaje ';    
-    query += 'WHERE id_empresa = $1 ';
+    // query += 'WHERE id_empresa = $1 ';
     query += 'ORDER BY porcentaje';
     
-    let result = await ambiensa_db.query(query, [idEmpresa]);
+    // let result = await fiscalizacion_db.query(query, [idEmpresa]);
+    let result = await fiscalizacion_db.query(query);
 
     return result;
 }
 
 async function ConsultaCapitulos(idEmpresa){
     let query = '';
-    query += 'SELECT id, descripcion ';
-    query += 'FROM Capitulo ';    
+    query += 'SELECT id_capitulo "id", descripcion ';
+    query += 'FROM capitulos ';    
     query += 'WHERE id_empresa = $1 ';
-    query += 'ORDER BY orden';
+    // query += 'ORDER BY orden';
     
     let result = await ambiensa_db.query(query, [idEmpresa]);
 
@@ -99,9 +116,10 @@ async function ConsultaPorcentajesPorCapitulo(idEmpresa, idCapitulo){
 
 async function ConsultaModelos(idEmpresa){
     let query = '';
-    query += 'SELECT id, descripcion ';
-    query += 'FROM Modelo ';    
+    query += 'SELECT id_modelo "id", descripcion ';
+    query += 'FROM modelos_proyecto ';    
     query += 'WHERE id_empresa = $1 ';
+    query += 'GROUP BY id_modelo, descripcion ';
     query += 'ORDER BY descripcion';
     
     let result = await ambiensa_db.query(query, [idEmpresa]);
@@ -143,8 +161,8 @@ async function ConsultaCapituloPorModelo(idEmpresa, idModelo){
 
 async function ConsultaEtapaConstructiva(idEmpresa){
     let query = '';
-    query += 'SELECT id, descripcion ';
-    query += 'FROM EtapaConstructiva ';    
+    query += 'SELECT id_etapa_constructiva "id", descripcion ';
+    query += 'FROM etapa_constructivas ';    
     query += 'WHERE id_empresa = $1 ';
     query += 'ORDER BY descripcion';
     
@@ -316,8 +334,8 @@ async function ConsultaParametro(idEmpresa){
 
 async function ConsultaProyecto(idEmpresa){
     let query = '';
-    query += 'SELECT id, descripcion ';
-    query += 'FROM Proyecto ';    
+    query += 'id_proyecto "id", descripcion, nemonico ';
+    query += 'FROM proyectos ';    
     query += 'WHERE id_empresa = $1 ';
     query += 'ORDER BY descripcion';
     
@@ -328,8 +346,8 @@ async function ConsultaProyecto(idEmpresa){
 
 async function ConsultaEtapaProyecto(idEmpresa, idProyecto){
     let query = '';
-    query += 'SELECT id, descripcion ';
-    query += 'FROM EtapaProyecto ';    
+    query += 'SELECT id_fase_proyecto "id", descripcion ';
+    query += 'FROM fases_proyectos ';    
     query += 'WHERE id_empresa = $1 ';
     query += 'AND id_proyecto = $2 ';
     query += 'ORDER BY descripcion';
@@ -377,10 +395,10 @@ async function ConsultaPeriodoFiscalizacion(idEmpresa){
 
 async function ConsultaUrbanizacion(idEmpresa){
     let query = '';
-    query += 'SELECT id, descripcion ';
-    query += 'FROM Urbanizacion ';    
+    query += 'SELECT id_urbanizacion "id", descripcion_etapa "descripcion" ';
+    query += 'FROM urbanizaciones ';    
     query += 'WHERE id_empresa = $1 ';
-    query += 'ORDER BY descripcion';
+    query += 'ORDER BY descripcion_etapa';
     
     let result = await ambiensa_db.query(query, [idEmpresa]);
 
@@ -389,18 +407,20 @@ async function ConsultaUrbanizacion(idEmpresa){
 
 async function ConsultaOrdenTrabajo(idEmpresa,usuario){
     let query = '';
-    query += 'SELECT ot.id,ot.codigo,p.id as idProyecto,p.descripcion as proyecto,u.id as idUrbanizacion,';
-    query += 'u.descripcion as urbanizacion,ep.descripcion as etapa,ot.fechaEmision as fechaEmision,';
-    query += 'ot.tiempoEjecucion || \' \' || ot.periodoEvaluacion as tiempoEjecucion,dot.id as id_detalle,';
-    query += 'dot.manzana,dot.solar,dot.id_modelo,dot.modelo,dot.descripcion,dot.fechaEspecificacionTecnica,dot.tipoOrdenTrabajo ';
-    query += 'FROM OrdenTrabajo ot ';    
-    query += 'INNER JOIN Proyecto p ON p.id = ot.id_proyecto ';
-    query += 'INNER JOIN Urbanizacion u ON u.id = ot.id_urbanizacion ';
-    query += 'INNER JOIN EtapaProyecto ep ON ep.id_proyecto = ot.id_proyecto AND ep.id = ot.id_etapaProyecto ';
-    query += 'INNER JOIN DetalleOrdenTrabajo dot ON dot.id_ordenTrabajo = ot.id ';
+    query += 'SELECT ot.id_orden_trabajo "id",ot.codigo,p.id_proyecto "idProyecto",p.descripcion "proyecto",u.id_urbanizacion "idUrbanizacion",';
+    query += 'u.descripcion_etapa "urbanizacion",ep.descripcion "etapa",ot.fecha_emision "fechaEmision",';
+    query += 'TRIM(ot.tiempo_ejecucion || \' \' || COALESCE(ot.periodo_ejecucion,\'\')) "tiempoEjecucion",dot.id_detalle_orden_trabajo "id_detalle",';
+    query += 'dot.id_manzana "manzana",dot.id_solar "solar",dot.id_modelo "id_modelo",dot.descripcion_modelo "descripcion",';
+    query += 'COALESCE(dot.fecha_especifica_tecnica,NOW()) "fechaEspecificacionTecnica",ep.descripcion "tipoOrdenTrabajo",u2.usuario ';
+    query += 'FROM orden_trabajos ot ';    
+    query += 'INNER JOIN proyectos p ON ot.id_proyecto = p.id_proyecto ';
+    query += 'INNER JOIN urbanizaciones u ON ot.id_urbanizacion = u.id_urbanizacion ';
+    query += 'INNER JOIN fases_proyectos ep ON ot.id_proyecto = ep.id_proyecto AND ot.id_fase_proyecto = ep.id_fase_proyecto ';
+    query += 'INNER JOIN detalle_orden_trabajos dot ON ot.id_orden_trabajo = dot.id_orden_trabajo ';
+    query += 'INNER JOIN usuarios u2 ON ot.id_usuario = u2.id_usuario ';
     query += 'WHERE ot.id_empresa = $1 ';
-    query += 'AND usuario = $2 ';
-    query += 'ORDER BY ot.fechaEmision,dot.id';
+    query += 'AND u2.usuario = $2 ';
+    query += 'ORDER BY ot.fecha_emision ,dot.id_detalle_orden_trabajo';
     
     let result = await ambiensa_db.query(query, [idEmpresa,usuario]);
 
@@ -409,6 +429,7 @@ async function ConsultaOrdenTrabajo(idEmpresa,usuario){
 
 module.exports = {    
     ValidaUsuario,
+    ConsultaEmpresa,
     ConsultaRoles,
     ConsultaRol,
     ConsultaPorcentajes,

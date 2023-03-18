@@ -1,5 +1,5 @@
 const controllers = require('../controllers/index');
-// const controllers = require('../controllers/mysql.controller');
+const auth = require('../auth/index');
 
 // module.exports = function(app) {
 //     app.get('/empresas', controllers.getEmpresas);
@@ -11,10 +11,11 @@ const express = require("express");
 const router = express.Router();
 
 router.get('/', (request, response) => {
-    response.send('Hola mundo cruel... jajajaja..!');
+    response.send('...');
 });
 
 router.post('/login', controllers.setIniciarSesion);
+router.get('/empresa/:usuario', auth.verifyToken, controllers.getEmpresa);
 router.get('/roles/:empresa', controllers.getRoles);
 router.get('/roles/:empresa/:rol', controllers.getRolPorId);
 router.get('/porcentajes/:empresa', controllers.getPorcentajes);

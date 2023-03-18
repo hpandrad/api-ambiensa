@@ -9,17 +9,45 @@ const setIniciarSesion = (request, response) => {
             message: "Ingrese usuario"
         });
     }
-
+    
     if(!pass || pass.trim() == '') {
         return response.status(400).send({
             message: "Ingrese clave"
         });
     }
-
+    
     data_access
         .ValidaUsuario(user, pass)        
         .then(result => {
             // console.log(result);
+            if(result.rows.length > 0) {
+                response.status(200).json(result.rows);
+            } else {
+                response.status(404).send({
+                    message: "Datos no encontrados"
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });
+        });
+}
+
+const getEmpresa = (request, response) => {
+    const idUsuario = parseInt(request.params.usuario)
+
+    if(idUsuario <= 0) {
+        return response.status(400).send({
+            message: "Usuario no existe"
+        });
+    }
+
+    data_access
+        .ConsultaEmpresa(idUsuario)        
+        .then(result => {            
             if(result.rows.length > 0) {
                 response.status(200).json(result.rows);
             } else {
@@ -60,7 +88,8 @@ const getRoles = (request, response) => {
         .catch(err => {
             console.log(err);
             return response.status(500).send({
-                message: "INTERNAL SERVER ERROR"
+                //message: "INTERNAL SERVER ERROR"
+                message: err
             });            
         });
 }
@@ -125,7 +154,8 @@ const getPorcentajes = (request, response) => {
         .catch(err => {
             console.log(err);
             return response.status(500).send({
-                message: "INTERNAL SERVER ERROR"
+                //message: "INTERNAL SERVER ERROR"
+                message: err
             });
         });
 }
@@ -1078,6 +1108,7 @@ const getOrdenesTrabajo = (request, response) => {
 
 module.exports = {
     setIniciarSesion,
+    getEmpresa,
     getRoles,
     getRolPorId,
     getPorcentajes,
