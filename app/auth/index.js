@@ -3,7 +3,6 @@ require('dotenv').config()
 const Request = require("request");
 const accessTokenVerificationUrl = `${process.env.API_URL}validartoken`;
 
-
 function verifyToken(req, res, next) {
     const bearerHeader = req.headers['authorization'];
 
