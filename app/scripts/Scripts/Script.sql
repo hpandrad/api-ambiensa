@@ -36,6 +36,7 @@ FROM detalle_orden_trabajos dot
 
 SELECT *
 FROM capitulos c 
+order by descripcion 
 ;
 
 /*
@@ -67,4 +68,12 @@ FROM usuario_empresas ue
 INNER JOIN empresas e ON ue.id_empresa = e.id_empresa 
 WHERE id_usuario = 879 
 GROUP BY e.id_empresa, e.nombre;
+
+
+SELECT 99 "id", 'Desconocido' "descripcion"
+UNION ALL 
+SELECT id_etapa_constructiva "id", descripcion
+FROM etapa_constructivas
+WHERE id_empresa = 1
+; 
 

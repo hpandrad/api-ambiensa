@@ -73,7 +73,7 @@ async function ConsultaCapitulos(idEmpresa){
     query += 'SELECT id_capitulo "id", descripcion ';
     query += 'FROM capitulos ';    
     query += 'WHERE id_empresa = $1 ';
-    // query += 'ORDER BY orden';
+    query += 'ORDER BY descripcion';
     
     let result = await ambiensa_db.query(query, [idEmpresa]);
 
