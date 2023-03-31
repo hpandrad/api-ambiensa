@@ -14,7 +14,7 @@ router.get('/', (request, response) => {
     response.send('...');
 });
 
-router.post('/login', controllers.setIniciarSesion);
+//router.post('/login', controllers.setIniciarSesion);
 router.get('/empresa/:usuario', auth.verifyToken, controllers.getEmpresa);
 router.get('/roles/:empresa', controllers.getRoles);
 router.get('/roles/:empresa/:rol', controllers.getRolPorId);

@@ -2,21 +2,21 @@ const db = require('../connections/index');
 const ambiensa_db = db.ambiensaPool;
 const fiscalizacion_db = db.fiscalizacionPool;
 
-async function ValidaUsuario(usuario, clave){
-    let query = '';
-    query += 'SELECT e.id_empresa "idEmpresa", e.nombre "empresa", u.usuario "usuario", u.nombre "nombreUsuario", u.id_rol "idRol" ';
-    query += 'FROM usuario_empresas ue ';
-    query += 'INNER JOIN empresas e ON ue.id_empresa = e.id_empresa ';
-    query += 'INNER JOIN usuarios u ON ue.id_usuario = u.id_usuario ';
-    query += 'WHERE UPPER(u.usuario) = UPPER($1) ';
-    // query += 'AND u.clave = $2';
-    query += 'GROUP BY e.id_empresa, e.nombre, u.usuario, u.nombre, u.id_rol';
+// async function ValidaUsuario(usuario, clave){
+//     let query = '';
+//     query += 'SELECT e.id_empresa "idEmpresa", e.nombre "empresa", u.usuario "usuario", u.nombre "nombreUsuario", u.id_rol "idRol" ';
+//     query += 'FROM usuario_empresas ue ';
+//     query += 'INNER JOIN empresas e ON ue.id_empresa = e.id_empresa ';
+//     query += 'INNER JOIN usuarios u ON ue.id_usuario = u.id_usuario ';
+//     query += 'WHERE UPPER(u.usuario) = UPPER($1) ';
+//     // query += 'AND u.clave = $2';
+//     query += 'GROUP BY e.id_empresa, e.nombre, u.usuario, u.nombre, u.id_rol';
     
-    // let result = await ambiensa_db.query(query, [usuario, clave]);
-    let result = await ambiensa_db.query(query, [usuario]);
+//     // let result = await ambiensa_db.query(query, [usuario, clave]);
+//     let result = await ambiensa_db.query(query, [usuario]);
 
-    return result;
-}
+//     return result;
+// }
 
 async function ConsultaEmpresa(idUsuario){
     let query = '';
@@ -460,7 +460,7 @@ async function ConsultaOrdenTrabajo(idEmpresa,usuario){
 }
 
 module.exports = {    
-    ValidaUsuario,
+    // ValidaUsuario,
     ConsultaEmpresa,
     ConsultaRoles,
     ConsultaRol,

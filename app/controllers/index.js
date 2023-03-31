@@ -1,40 +1,40 @@
 const data_access = require('../data_access/index');
 const sqlJoinToJson = require('sql-join-to-json');
 
-const setIniciarSesion = (request, response) => {
-    const { user, pass } = request.body
+// const setIniciarSesion = (request, response) => {
+//     const { user, pass } = request.body
 
-    if(!user || user.trim() == '') {
-        return response.status(400).send({
-            message: "Ingrese usuario"
-        });
-    }
+//     if(!user || user.trim() == '') {
+//         return response.status(400).send({
+//             message: "Ingrese usuario"
+//         });
+//     }
     
-    if(!pass || pass.trim() == '') {
-        return response.status(400).send({
-            message: "Ingrese clave"
-        });
-    }
+//     if(!pass || pass.trim() == '') {
+//         return response.status(400).send({
+//             message: "Ingrese clave"
+//         });
+//     }
     
-    data_access
-        .ValidaUsuario(user, pass)        
-        .then(result => {
-            // console.log(result);
-            if(result.rows.length > 0) {
-                response.status(200).json(result.rows);
-            } else {
-                response.status(404).send({
-                    message: "Datos no encontrados"
-                });
-            }
-        })
-        .catch(err => {
-            console.log(err);
-            return response.status(500).send({
-                message: "INTERNAL SERVER ERROR"
-            });
-        });
-}
+//     data_access
+//         .ValidaUsuario(user, pass)        
+//         .then(result => {
+//             // console.log(result);
+//             if(result.rows.length > 0) {
+//                 response.status(200).json(result.rows);
+//             } else {
+//                 response.status(404).send({
+//                     message: "Datos no encontrados"
+//                 });
+//             }
+//         })
+//         .catch(err => {
+//             console.log(err);
+//             return response.status(500).send({
+//                 message: "INTERNAL SERVER ERROR"
+//             });
+//         });
+// }
 
 const getEmpresa = (request, response) => {
     const idUsuario = parseInt(request.params.usuario)
@@ -1190,7 +1190,7 @@ const getOrdenesTrabajo = (request, response) => {
 }
 
 module.exports = {
-    setIniciarSesion,
+    // setIniciarSesion,
     getEmpresa,
     getRoles,
     getRolPorId,
