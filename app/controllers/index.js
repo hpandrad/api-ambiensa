@@ -189,6 +189,89 @@ const getCapitulos = (request, response) => {
         });
 }
 
+const getRelacionCapitulos = (request, response) => {
+    const idEmpresa = parseInt(request.params.empresa)    
+    const idCapituloPadre = parseInt(request.params.capitulopadre)
+
+    if(idEmpresa <= 0) {
+        return response.status(400).send({
+            message: "Empresa no existe"
+        });
+    }
+
+    if(idCapituloPadre <= 0) {
+        return response.status(400).send({
+            message: "Capitulo no existe"
+        });
+    }
+
+    data_access
+        .ConsultaRelacionCapitulos(idEmpresa,idCapituloPadre)        
+        .then(result => {
+            // console.log(result);
+            if(result.rows.length > 0) {
+                response.status(200).json(result.rows);
+            } else {
+                response.status(404).send({
+                    message: "Datos no encontrados"
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });
+        });
+}
+
+const setRelacionCapitulos = (request, response) => {
+    const { empresa, capitulopadre, capitulo, porcentaje } = request.body
+    const idEmpresa = parseInt(empresa);
+    const idCapituloPadre = parseInt(capitulopadre);
+    const idCapitulo = parseInt(capitulo);
+    const idPorcentaje = parseInt(porcentaje);
+
+    if(idEmpresa <= 0) {
+        return response.status(400).send({
+            message: "Empresa no existe"
+        });
+    }
+
+    if(idCapituloPadre <= 0) {
+        return response.status(400).send({
+            message: "Capitulo no existe"
+        });
+    }
+
+    // if(idCapitulo <= 0) {
+    //     return response.status(400).send({
+    //         message: "Capitulo no existe"
+    //     });
+    // }
+
+    data_access
+        .InsertaRelacionCapitulos(idEmpresa, idCapituloPadre, idCapitulo, idPorcentaje)
+        .then(result => {
+            // console.log(result);
+            if(result) {
+                response.status(200).json({
+                    message: "Datos ingresados correctamente"
+                });
+            } else {
+                response.status(404).send({
+                    message: "Se produjo un error al insertar datos"
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return response.status(500).send({
+                message: "INTERNAL SERVER ERROR"
+            });
+        });
+}
+
 const setPorcentajePorCapitulo = (request, response) => {
     const { empresa, capitulo, porcentajes } = request.body
     const idEmpresa = parseInt(empresa);
@@ -1113,6 +1196,8 @@ module.exports = {
     getRolPorId,
     getPorcentajes,
     getCapitulos,
+    getRelacionCapitulos,
+    setRelacionCapitulos,
     setPorcentajePorCapitulo,    
     getPorcentajePorCapitulo,
     getModelos,

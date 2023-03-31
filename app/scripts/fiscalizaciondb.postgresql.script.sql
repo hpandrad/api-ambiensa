@@ -16,6 +16,14 @@ CREATE TABLE Porcentaje(
 	CONSTRAINT PK_Porcentaje PRIMARY KEY(id)
 );
 
+CREATE TABLE RolApp(
+	id_empresa INTEGER,	
+	id INTEGER,
+	descripcion VARCHAR(50),
+	
+	CONSTRAINT PK_RolApp PRIMARY KEY(id)
+);
+
 CREATE TABLE Configuracion_PorcentajePorCapitulo(
 	id_empresa INTEGER,	
 	id_capitulo INTEGER,
@@ -30,6 +38,15 @@ CREATE TABLE Configuracion_CapituloPorModelo(
 	id_capitulo INTEGER,
 	
 	CONSTRAINT PK_Configuracion_CapituloPorModelo PRIMARY KEY(id_modelo,id_capitulo)
+);
+
+CREATE TABLE Configuracion_RelacionCapitulo(
+	id_empresa INTEGER,	
+	id_capitulo_padre INTEGER,
+	id_capitulo INTEGER,
+	id_porcentaje INTEGER,
+	
+	CONSTRAINT PK_Configuracion_RelacionCapitulo PRIMARY KEY(id_capitulo_padre,id_capitulo)
 );
 
 CREATE TABLE Configuracion_EtapaConstructivaPorCapitulo(
@@ -101,3 +118,7 @@ INSERT INTO Porcentaje(id_empresa,id,descripcion,porcentaje) VALUES(1,3,'50%',0.
 INSERT INTO Porcentaje(id_empresa,id,descripcion,porcentaje) VALUES(1,4,'75%',0.75);
 INSERT INTO Porcentaje(id_empresa,id,descripcion,porcentaje) VALUES(1,5,'100%',1.00);
 
+INSERT INTO RolApp(id_empresa,id,descripcion) VALUES(1,1,'Jefe de Fiscalización');
+INSERT INTO RolApp(id_empresa,id,descripcion) VALUES(1,2,'Coordinador');
+INSERT INTO RolApp(id_empresa,id,descripcion) VALUES(1,3,'Auditor');
+INSERT INTO RolApp(id_empresa,id,descripcion) VALUES(1,4,'Gerente');

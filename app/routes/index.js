@@ -20,6 +20,8 @@ router.get('/roles/:empresa', controllers.getRoles);
 router.get('/roles/:empresa/:rol', controllers.getRolPorId);
 router.get('/porcentajes/:empresa', controllers.getPorcentajes);
 router.get('/capitulos/:empresa', controllers.getCapitulos);
+router.get('/relacioncapitulos/:empresa/:capitulopadre', controllers.getRelacionCapitulos);
+router.post('/relacioncapitulos', controllers.setRelacionCapitulos);
 router.post('/porcentajeporcapitulo', controllers.setPorcentajePorCapitulo);
 router.get('/porcentajeporcapitulo/:empresa/:capitulo', controllers.getPorcentajePorCapitulo);
 router.get('/modelos/:empresa', controllers.getModelos);

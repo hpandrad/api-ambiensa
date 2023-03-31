@@ -80,6 +80,38 @@ async function ConsultaCapitulos(idEmpresa){
     return result;
 }
 
+async function ConsultaRelacionCapitulos(idEmpresa, idCapituloPadre){
+    let query = '';
+    query += 'SELECT id_capitulo_padre,id_capitulo,id_porcentaje ';
+    query += 'FROM Configuracion_RelacionCapitulo ';    
+    query += 'WHERE id_empresa = $1 ';
+    query += 'AND id_capitulo_padre = $2';
+    
+    let result = await fiscalizacion_db.query(query, [idEmpresa,idCapituloPadre]);
+
+    return result;
+}
+
+async function InsertaRelacionCapitulos(idEmpresa, idCapituloPadre, idCapitulo, idPorcentaje){
+    let deleteQuery = 'DELETE FROM Configuracion_RelacionCapitulo WHERE id_empresa = $1 AND id_capitulo_padre = $2';    
+    let insertQuery = 'INSERT INTO Configuracion_RelacionCapitulo(id_empresa, id_capitulo_padre, id_capitulo, id_porcentaje) VALUES($1, $2, $3, $4)';    
+    let result = false;    
+
+    try {
+        await fiscalizacion_db.query(deleteQuery, [idEmpresa, idCapituloPadre]);
+
+        if(idCapitulo > 0 && idPorcentaje > 0) {
+            await fiscalizacion_db.query(insertQuery, [idEmpresa, idCapituloPadre, idCapitulo, idPorcentaje]);    
+        }        
+        
+        result = true;
+    } catch(error) {
+        console.error(error.stack);        
+    }
+
+    return result;
+}
+
 async function InsertaPorcentajePorCapitulo(idEmpresa, idCapitulo, arrPorcentajes){
     let deleteQuery = 'DELETE FROM Configuracion_PorcentajePorCapitulo WHERE id_empresa = $1 AND id_capitulo = $2';    
     let insertQuery = 'INSERT INTO Configuracion_PorcentajePorCapitulo(id_empresa, id_capitulo, id_porcentaje) VALUES($1, $2, $3)';    
@@ -434,6 +466,8 @@ module.exports = {
     ConsultaRol,
     ConsultaPorcentajes,
     ConsultaCapitulos,
+    ConsultaRelacionCapitulos,
+    InsertaRelacionCapitulos,
     InsertaPorcentajePorCapitulo,    
     ConsultaPorcentajesPorCapitulo,
     ConsultaModelos,
