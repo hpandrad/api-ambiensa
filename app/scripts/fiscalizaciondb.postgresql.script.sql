@@ -122,3 +122,9 @@ INSERT INTO RolApp(id_empresa,id,descripcion) VALUES(1,1,'Jefe de Fiscalización
 INSERT INTO RolApp(id_empresa,id,descripcion) VALUES(1,2,'Coordinador');
 INSERT INTO RolApp(id_empresa,id,descripcion) VALUES(1,3,'Auditor');
 INSERT INTO RolApp(id_empresa,id,descripcion) VALUES(1,4,'Gerente');
+
+
+select id_capitulo_padre,id_capitulo,id_porcentaje 
+from Configuracion_RelacionCapitulo
+where id_empresa = $1
+and id_capitulo_padre = $2
