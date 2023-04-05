@@ -368,7 +368,7 @@ async function ConsultaParametro(idEmpresa){
 
 async function ConsultaProyecto(idEmpresa){
     let query = '';
-    query += 'id_proyecto "id", descripcion, nemonico ';
+    query += 'SELECT id_proyecto "id", descripcion, nemonico ';
     query += 'FROM proyectos ';    
     query += 'WHERE id_empresa = $1 ';
     query += 'ORDER BY descripcion';
