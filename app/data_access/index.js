@@ -193,6 +193,8 @@ async function ConsultaCapituloPorModelo(idEmpresa, idModelo){
 
 async function ConsultaEtapaConstructiva(idEmpresa){
     let query = '';
+    query += 'SELECT -1 "id", -1 "descripcion" ';
+    query += 'UNION ALL ';
     query += 'SELECT id_etapa_constructiva "id", descripcion ';
     query += 'FROM etapa_constructivas ';    
     query += 'WHERE id_empresa = $1 ';
