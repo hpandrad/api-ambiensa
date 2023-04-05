@@ -70,7 +70,7 @@ WHERE id_usuario = 879
 GROUP BY e.id_empresa, e.nombre;
 
 
-SELECT -1 "id", -1 "descripcion"
+SELECT -1 "id", -1 "descripcion" 
 UNION ALL 
 SELECT id_etapa_constructiva "id", descripcion
 FROM etapa_constructivas
